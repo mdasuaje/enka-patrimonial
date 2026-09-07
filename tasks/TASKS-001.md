@@ -1,0 +1,4 @@
+- [x] Tarea 01: Sincronización de 53 imágenes reales de OneDrive a evidencia/img/
+- [x] Tarea 02: Implementación de script JS ligero para filtrado por Ejes I-IV en index.html
+- [x] Tarea 03: Integración de visor Lightbox modal para smartphones
+- [x] Tarea 04: Verificación y registro de hito en Engram

@@ -1,0 +1,15 @@
+{
+  "proyecto": "Gestión Patrimonial Edificio ENKA",
+  "gaceta_oficial": "39.272",
+  "unidades_habitacionales": 20,
+  "alcaldia_destinatario": "A/J Carmen Meléndez",
+  "version": "1.0.1",
+  "artefactos": [
+    "evidencia/index.html",
+    "evidencia/RESUMEN_EJECUTIVO_ENTREGA.md",
+    "specs/google_sites_payload.txt",
+    "design/site_structure.json",
+    "evidencia/expediente_enka_dist_v1.tar.gz"
+  ],
+  "puerto_servicio": 8085
+}

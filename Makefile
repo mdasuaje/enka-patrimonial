@@ -10,8 +10,8 @@ build:
 	@echo "[✓] Compilación completada: evidencia/index.html"
 
 serve: build
-	@echo "[+] Iniciando servidor HTTP local en puerto 8080..."
-	@python3 -m http.server 8080 --directory evidencia
+	@echo "[+] Iniciando servidor HTTP local en http://localhost:8085..."
+	@python3 -m http.server 8085 --directory evidencia
 
 verify:
 	@engram doctor --project $(ENGRAM_PROJECT)

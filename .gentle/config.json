@@ -1,0 +1,12 @@
+{
+  "project": "enka-patrimonial",
+  "workspace": "/home/masua/workspaces/enka-patrimonial",
+  "harness": "gentle-engram",
+  "methodology": "Spec-Driven Development (SDD)",
+  "orchestration_agent": "pi",
+  "media_source": "/mnt/c/Users/BrenierComputer123/OneDrive/Imágenes/ENKA-JUL-2026",
+  "memory": {
+    "engine": "sqlite-fts5",
+    "mcp_enabled": true
+  }
+}
