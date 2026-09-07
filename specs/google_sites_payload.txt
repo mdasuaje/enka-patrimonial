@@ -1,0 +1,27 @@
+====================================================================
+PAYLOAD DE CONTENIDO PARA ESTRUCTURAR EL GOOGLE SITE (ENKA)
+====================================================================
+
+[PÁGINA 1: INICIO]
+* Título: Gestión Patrimonial Edificio ENKA: De la Autogestión al Apoyo Institucional
+* Encabezado: Bien de Interés Cultural (Gaceta Oficial Nro. 39.272, Sep 25, 2009)
+* Texto Principal: Resumen de la Comunidad de Bienes (20 apartamentos) y co-custodia del inmueble.
+* Botón CTA: "Ver Carta de Solicitud" (Enlace a PDF en Google Drive)
+
+[PÁGINA 2: AUTOGESTIÓN VECINAL]
+* Título: Fase I Completada - Mantenimiento Correctivo en Azotea
+* Métrica Clave: $1.026,00 USD invertidos por autogestión vecinal.
+* Descripción: Rehabilitación de muro parapetado de 13m y 4 columnas de amarre en bloque de arcilla.
+
+[PÁGINA 3: DOSSIER TÉCNICO POST-SISMO]
+* Título: Fases II y III - Diagnóstico de Daños y Requerimientos Urgentes
+* Áreas:
+  1. Frisos en fachadas externas (Av. Fermín Toro y Av. Rafael Seijas).
+  2. Saneamiento de columnas de carga con tratamiento anticorrosivo (acero expuesto).
+
+[PÁGINA 4: EXPEDIENTE LEGAL]
+* Título: Repositorio Documental y Consenso Vecinal
+* Archivos a Incrustar (Google Drive):
+  1. Copia simple de la Gaceta Oficial Nro. 39.272.
+  2. Matriz de Firmas y expediente de arraigo (RIF, Cédulas, REP, Corpoelec).
+====================================================================

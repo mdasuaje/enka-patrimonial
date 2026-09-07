@@ -1,0 +1,30 @@
+{
+  "site_title": "Gestión Patrimonial Edificio ENKA",
+  "meta": {
+    "gaceta_oficial": "39.272",
+    "estatus": "Bien de Interés Cultural",
+    "unidades": 20
+  },
+  "menu_navigation": [
+    {
+      "page_id": "home",
+      "title": "Inicio: El Valor Patrimonial y Solicitud",
+      "spec_source": "specs/carta_alcaldia.md"
+    },
+    {
+      "page_id": "autogestion",
+      "title": "Autogestión Vecinal (Fase I - $1026 USD)",
+      "spec_source": "specs/dossier_tecnico.md"
+    },
+    {
+      "page_id": "dossier_tecnico",
+      "title": "Dossier Técnico Post-Sismo",
+      "spec_source": "specs/dossier_tecnico.md"
+    },
+    {
+      "page_id": "expediente_legal",
+      "title": "Expediente Legal y Soportes",
+      "spec_source": "tasks/checklist_expediente.md"
+    }
+  ]
+}

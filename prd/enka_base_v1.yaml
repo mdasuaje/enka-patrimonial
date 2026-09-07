@@ -1,0 +1,13 @@
+proyecto: "Restauración Integral Edificio ENKA"
+marco_legal:
+  estatus: "Bien de Interés Cultural (Lo Construido)"
+  gaceta_oficial: "Nro. 39.272 (2009-09-25)"
+  regimen: "Comunidad de Hecho y de Bienes (Art. 759 CC)"
+hitos_operativos:
+  fase_1:
+    estado: "COMPLETADO"
+    descripcion: "Rehabilitación muro azotea (13m) y 4 columnas"
+    financiamiento: "Autogestión ($1026.00 USD)"
+  fase_2_3:
+    estado: "PENDIENTE"
+    descripcion: "Restauración fachadas externas e inspección estructural"
