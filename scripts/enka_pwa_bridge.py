@@ -3,16 +3,15 @@
 ENKA PWA Bridge - Local API Server (Zero-Billing, Zero-Copy)
 =============================================================
 
-HTTP server en puerto 8080 que conecta el frontend PWA con el motor FTS5 local.
+HTTP server en puerto 3001 que conecta el frontend PWA con el motor FTS5 local.
 Cero dependencias externas: solo stdlib (http.server, sqlite3, json).
 
 Endpoints:
-  POST /api/auth  - Autenticación 3-factores (Tel:Apt:Nombre) contra v_financiero_index
+  POST /api/auth  - Autenticación 3-factores (Tel:Apt:Nombre) contra financiero_caja_chica
   GET  /health    - Health check
 """
 
 import json
-import logging
 import os
 import sqlite3
 import sys
@@ -25,11 +24,13 @@ from urllib.parse import urlparse
 # -----------------------------------------------------------------------------
 DB_PATH = os.path.join(tempfile.gettempdir(), "enka_patrimonial_vault.db")  # nosec: ephemeral
 HOST = "127.0.0.1"
-PORT = 8080
-ALLOWED_ORIGIN = "http://localhost:8080"
+PORT = 3001
+ALLOWED_ORIGIN = "http://localhost:3001"
 
 # Looker Studio embed template (reemplazar con IDs reales en producción)
-LOOKER_TEMPLATE = "https://lookerstudio.google.com/embed/reporting/XYZ/page/ABC?params={params}"
+LOOKER_TEMPLATE = (
+    "https://lookerstudio.google.com/embed/reporting/XYZ/page/ABC?params={params}"
+)
 
 
 # -----------------------------------------------------------------------------
@@ -44,29 +45,32 @@ def get_db_connection():
 
 def validate_credentials(telefono: str, apartamento: str, nombre: str) -> dict | None:
     """
-    Valida la triada 3-factores contra v_financiero_index (FTS5).
+    Valida la triada 3-factores contra la tabla financiero_caja_chica.
+    Busca por número de teléfono y verifica los 3 factores (Zero-Trust).
     Retorna dict con datos del residente si coincide, None si no.
     """
     # Normalización (debe coincidir con la guardada en BD)
     apt_norm = apartamento.strip().upper()
     name_norm = nombre.strip().upper()
+    tel_busqueda = telefono.strip()
 
     conn = get_db_connection()
     try:
         cursor = conn.cursor()
-        # FTS5 MATCH con parámetros (seguro contra inyección)
+        # Búsqueda directa por teléfono en la tabla de finanzas
+        # El teléfono se busca en el campo telefono (formato E.164 +58XXX XXX XXXX)
         cursor.execute(
             """
             SELECT fc.apto_id, fc.residente_nombre, fc.monto_usd, fc.referencia_bnc, fc.fecha_pago, fc.estado_conciliacion
             FROM financiero_caja_chica fc
-            JOIN v_financiero_index vi ON fc.id_tx = vi.id_tx
-            WHERE v_financiero_index MATCH ?
+            WHERE fc.telefono = ?
             ORDER BY fc.fecha_pago DESC
             LIMIT 1
             """,
-            (telefono,),
+            (tel_busqueda,),
         )
         row = cursor.fetchone()
+
     finally:
         conn.close()
 
@@ -74,7 +78,10 @@ def validate_credentials(telefono: str, apartamento: str, nombre: str) -> dict |
         return None
 
     # Verificación estricta 3-factores (Zero-Trust)
-    if row["residente_nombre"].upper() == name_norm and row["apto_id"].upper() == apt_norm:
+    if (
+        row["residente_nombre"].upper() == name_norm
+        and row["apto_id"].upper() == apt_norm
+    ):
         return dict(row)
     return None
 
@@ -86,7 +93,7 @@ class BridgeHandler(BaseHTTPRequestHandler):
     def _send_json(self, status: int, data: dict):
         self.send_response(status)
         self.send_header("Content-Type", "application/json")
-        self.send_header("Access-Control-Allow-Origin", "http://localhost:8080")
+        self.send_header("Access-Control-Allow-Origin", "http://localhost:3001")
         self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
@@ -95,7 +102,7 @@ class BridgeHandler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
         """CORS preflight."""
         self.send_response(204)
-        self.send_header("Access-Control-Allow-Origin", "http://localhost:8080")
+        self.send_header("Access-Control-Allow-Origin", "http://localhost:3001")
         self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
@@ -130,23 +137,22 @@ class BridgeHandler(BaseHTTPRequestHandler):
             return
 
         # Éxito: generar URL de Looker Studio parametrizada
-        try:
-            params = {"apto_id": match["apto_id"], "nombre": match["residente_nombre"]}
-            looker_url = f"https://lookerstudio.google.com/embed/reporting/XYZ/page/ABC?params={json.dumps(params)}"
+        params = {"apto_id": match["apto_id"], "nombre": match["residente_nombre"]}
+        looker_url = f"https://lookerstudio.google.com/embed/reporting/XYZ/page/ABC?params={json.dumps(params)}"
 
-            self._send_json(200, {
+        self._send_json(
+            200,
+            {
                 "success": True,
                 "looker_url": looker_url,
                 "documento": {
-                "nombre": f"Informe Financiero - {match['apto_id']}.pdf",
-                "signed_url": looker_url,
-                "expires_in_seconds": 900,
-                "mime_type": "application/pdf"
-                }
-            })
-        except (KeyError, TypeError, ValueError) as e:
-            logging.error(f"Error building response: {e}")
-            self._send_json(500, {"error": "Error interno generando respuesta"})
+                    "nombre": f"Informe Financiero - {match['apto_id']}.pdf",
+                    "signed_url": looker_url,
+                    "expires_in_seconds": 900,
+                    "mime_type": "application/pdf",
+                },
+            },
+        )
 
     def do_GET(self):
         if self.path == "/health":
@@ -165,6 +171,8 @@ def main():
         print("   Ejecute primero: make audit-vault")
         sys.exit(1)
 
+    # Allow socket reuse to avoid 'Address already in use' errors
+    HTTPServer.allow_reuse_address = True
     server = HTTPServer((HOST, PORT), BridgeHandler)
     print(f"🌉 [ENKA Bridge] Servidor iniciado en http://{HOST}:{PORT}")
     print("   Endpoints: POST /api/auth | GET /health")
