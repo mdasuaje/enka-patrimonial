@@ -1,2 +1,202 @@
-# Local Pi runtime state
-.atl/
+# ============================================================
+# GESTIÓN PATRIMONIAL EDIFICIO ENKA — .gitignore (Zero-Trust, SSoT)
+# ============================================================
+# Bloquea todo lo que pueda violar Single Source of Truth (SSoT)
+# o introducir dependencias locales en el thin-client.
+# ============================================================
+
+# --- Entornos Virtuales y Dependencias Python ---
+.venv/
+venv/
+env/
+ENV/
+.env/
+pipenv/
+poetry.lock
+requirements.txt.local
+*.egg-info/
+dist/
+build/
+*.whl
+
+# --- Cachés y Artefactos Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pytype/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+
+# --- Entornos Virtuales de Node/JS ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json.local
+
+# --- Builds y Distribuciones ---
+dist/
+build/
+*.tar.gz
+*.zip
+*.tgz
+
+# --- Configuraciones IDE/Editor Locales ---
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+*.sublime-workspace
+*.sublime-project
+.project
+.classpath
+.settings/
+.nvim/
+.vim/
+*.vimrc.local
+
+# --- Archivos de Entorno y Secretos (Zero-Trust) ---
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+*.pem
+*.key
+*.crt
+*.cert
+*.p12
+*.pfx
+*.jks
+secrets.yaml
+secrets.yml
+*.secret
+
+# --- Credenciales Google Cloud / ADC (Zero-Copy, Cloud-Native) ---
+**/gcloud/*
+**/.config/gcloud/*
+application_default_credentials.json
+credentials.json
+client_secret*.json
+service-account*.json
+
+# --- Cachés y Temporales ---
+.tmp/
+tmp/
+temp/
+*.tmp
+*.temp
+*.log
+*.bak
+*.backup
+*.orig
+
+# --- Datos Locales y SSoT (Zero-Copy: datos solo en la nube) ---
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.csv
+*.tsv
+*.xlsx
+*.xls
+*.jsonl
+data/
+datasets/
+exports/
+downloads/
+
+# --- OS y Sistema ---
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# --- Testing y Coverage Local ---
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+
+# --- Documentación Local Generada ---
+docs/_build/
+site/
+*.pdf.local
+
+# --- Firebase / Cloud Functions Local Emulator ---
+.firebase/
+functions/.runtimeconfig.json
+functions/node_modules/
+functions/package-lock.json
+
+# --- Terraform / IaC State (State solo en backend remoto) ---
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+.terraform/
+.terraform.lock.hcl
+
+# --- Docker / Contenedores ---
+.docker/
+docker-compose.override.yml
+Dockerfile.local
+
+# --- Archivos Generados por Scripts Locales ---
+*.generated.py
+*_generated.py
+*.proto.py
+*_pb2.py
+*_pb2_grpc.py
+
+# --- Engram / Memoria Local (Solo en servidor remoto) ---
+.engram/
+engram.db
+engram.db-*
+
+# --- Archivos Temporales de Scripts ETL/RAG ---
+*.tmp.json
+*.tmp.csv
+*.tmp.yaml
+spread_validation_*.json
+rag_validation_*.json
+
+# ============================================================
+# EXCEPCIONES EXPLÍCITAS (Archivos que SÍ se versionan)
+# ============================================================
+# !.gitignore
+# !README.md
+# !LICENSE
+# !requirements.txt
+# !pyproject.toml
+# !Dockerfile
+# !docker-compose.yml
+# !*.tf
+# !*.yaml
+# !*.yml
+# !*.sh
+# !*.py
+# !*.js
+# !*.ts
+# !*.html
+# !*.css
+# !*.json
+# !*.md
+# !frontend/**/*
+# !scripts/**/*
+# !rag_ingest_cloud_function/**/*
+# ============================================================

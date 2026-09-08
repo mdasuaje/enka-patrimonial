@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="es" class="dark">
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+        />
+        <meta name="theme-color" content="#0c1a2b" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta
+            name="apple-mobile-web-app-status-bar-style"
+            content="black-translucent"
+        />
+        <meta
+            name="description"
+            content="Hub de Inspección Patrimonial - Edificio ENKA (BIC G.O. 39.272)"
+        />
+        <title>ENKA Inspection Hub</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="manifest" href="manifest.json" />
+        <style>
+            .filter-btn.active {
+                background-color: #0284c7;
+                color: white;
+                border-color: #38bdf8;
+            }
+            .lightbox-img {
+                transition: transform 0.3s ease;
+            }
+            .swipe-area {
+                touch-action: pan-y;
+            }
+            @media (max-width: 640px) {
+                .gallery-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body
+        class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen"
+    >
+        <!-- Header Institucional -->
+        <header
+            class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 backdrop-blur-md bg-opacity-90"
+        >
+            <div
+                class="max-w-4xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2"
+            >
+                <div>
+                    <span
+                        class="text-xs font-bold uppercase tracking-widest text-sky-400 bg-sky-950 px-2 py-1 rounded-full border border-sky-800"
+                    >
+                        Bien de Interés Cultural · G.O. 39.272
+                    </span>
+                    <h1 class="text-lg sm:text-xl font-bold text-white mt-1">
+                        Hub de Inspección: Edificio ENKA
+                    </h1>
+                    <p class="text-xs text-sky-400 mt-0.5">
+                        Av. Fermín Toro ∩ Av. Rafael Seijas, San Bernardino,
+                        Caracas
+                    </p>
+                </div>
+                <div class="text-xs text-slate-400 font-mono text-right">
+                    Alcaldía de Caracas / IPC / Co-Custodia Vecinal
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-4xl mx-auto px-4 py-6 space-y-6 pb-24">
+            <!-- Estado de Fases (Resumen) -->
+            <section
+                class="bg-slate-900 rounded-xl p-4 border border-slate-800 shadow-lg"
+            >
+                <h2
+                    class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3"
+                >
+                    Estatus de Avance (Sep 2026)
+                </h2>
+                <div class="grid grid-cols-3 gap-3">
+                    <article
+                        class="bg-slate-950 p-3 rounded-lg border border-emerald-900/50"
+                    >
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs font-bold text-emerald-400"
+                                >FASE I</span
+                            >
+                            <span class="text-xs font-bold text-emerald-400"
+                                >✓ 100%</span
+                            >
+                        </div>
+                        <div class="w-full bg-slate-800 rounded-full h-1.5">
+                            <div
+                                class="bg-emerald-500 h-1.5 rounded-full"
+                                style="width: 100%"
+                            ></div>
+                        </div>
+                        <p class="text-[10px] text-slate-400 mt-1">
+                            Azotea - Autogestión
+                        </p>
+                    </article>
+                    <article
+                        class="bg-slate-950 p-3 rounded-lg border border-amber-900/50"
+                    >
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs font-bold text-amber-400"
+                                >FASE II</span
+                            >
+                            <span class="text-xs font-bold text-amber-400"
+                                >⟳ 35%</span
+                            >
+                        </div>
+                        <div class="w-full bg-slate-800 rounded-full h-1.5">
+                            <div
+                                class="bg-amber-500 h-1.5 rounded-full"
+                                style="width: 35%"
+                            ></div>
+                        </div>
+                        <p class="text-[10px] text-slate-400 mt-1">
+                            Columnas - SikaGrout
+                        </p>
+                    </article>
+                    <article
+                        class="bg-slate-950 p-3 rounded-lg border border-sky-900/50"
+                    >
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs font-bold text-sky-400"
+                                >FASE III</span
+                            >
+                            <span class="text-xs font-bold text-sky-400"
+                                >⏳ 10%</span
+                            >
+                        </div>
+                        <div class="w-full bg-slate-800 rounded-full h-1.5">
+                            <div
+                                class="bg-sky-500 h-1.5 rounded-full"
+                                style="width: 10%"
+                            ></div>
+                        </div>
+                        <p class="text-[10px] text-slate-400 mt-1">
+                            Fachadas - IPC/Alcaldía
+                        </p>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Autenticación 3-Factores (Vista Ciega) -->
+            <section
+                id="auth-section"
+                class="bg-slate-900 rounded-xl p-4 border border-slate-800 space-y-4"
+            >
+                <h2
+                    class="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2"
+                >
+                    <span class="w-2 h-2 rounded-full bg-sky-500"></span>
+                    Acceso Vecino: Informe Estructural Individual (Vista Ciega)
+                </h2>
+                <form id="auth-form" class="space-y-3" autocomplete="off">
+                    <div>
+                        <label
+                            class="block text-xs font-medium text-slate-300 mb-1"
+                            >Apartamento</label
+                        >
+                        <select
+                            name="apartamento"
+                            required
+                            class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 focus:border-transparent"
+                        >
+                            <option value="">Seleccione...</option>
+                            <option value="PB">PB</option>
+                            <script>
+                                for (let i = 1; i <= 18; i++)
+                                    document.write(
+                                        '<option value="' +
+                                            i +
+                                            '">' +
+                                            i +
+                                            "</option>",
+                                    );
+                            </script>
+                        </select>
+                    </div>
+                    <div>
+                        <label
+                            class="block text-xs font-medium text-slate-300 mb-1"
+                            >Nombre y Apellido</label
+                        >
+                        <input
+                            name="nombre_completo"
+                            type="text"
+                            required
+                            placeholder="Ej: Juan Pérez"
+                            class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 focus:border-transparent"
+                            autocomplete="name"
+                        />
+                    </div>
+                    <div>
+                        <label
+                            class="block text-xs font-medium text-slate-300 mb-1"
+                            >Teléfono (Venezuela)</label
+                        >
+                        <input
+                            name="telefono"
+                            type="tel"
+                            required
+                            placeholder="+58 412 123 4567"
+                            class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 focus:border-transparent"
+                            autocomplete="tel"
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        class="w-full py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-lg transition-colors"
+                    >
+                        Acceder a mi Informe (Vista Ciega)
+                    </button>
+                    <p
+                        id="auth-error"
+                        class="text-xs text-red-400 text-center hidden"
+                    ></p>
+                </form>
+            </section>
+
+            <!-- Resultado Vista Ciega -->
+            <section
+                id="result-section"
+                class="hidden bg-slate-900 rounded-xl p-4 border border-slate-800 space-y-3"
+            >
+                <div class="flex justify-between items-center">
+                    <h2 class="text-sm font-bold text-sky-400">
+                        Informe Estructural - Apto <span id="result-apt"></span>
+                    </h2>
+                    <button
+                        id="btn-logout"
+                        class="text-xs text-slate-400 hover:text-sky-400"
+                    >
+                        Cerrar sesión
+                    </button>
+                </div>
+                <div id="result-content" class="space-y-2"></div>
+            </section>
+
+            <!-- Filtros Galería (Ejes I-IV) -->
+            <section
+                class="bg-slate-900 rounded-xl p-4 border border-slate-800"
+            >
+                <h2
+                    class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3"
+                >
+                    Filtrar Galería por Eje Probatorio
+                </h2>
+                <div class="flex flex-wrap gap-2" id="filter-buttons">
+                    <button
+                        data-filter="all"
+                        class="filter-btn active text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700"
+                    >
+                        Todos
+                    </button>
+                    <button
+                        data-filter="eje-1"
+                        class="filter-btn text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700"
+                    >
+                        Eje I: Contexto
+                    </button>
+                    <button
+                        data-filter="eje-2"
+                        class="filter-btn text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700"
+                    >
+                        Eje II: Autogestión
+                    </button>
+                    <button
+                        data-filter="eje-3"
+                        class="filter-btn text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700"
+                    >
+                        Eje III: Patologías
+                    </button>
+                    <button
+                        data-filter="eje-4"
+                        class="filter-btn text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700"
+                    >
+                        Eje IV: Riesgo
+                    </button>
+                </div>
+            </section>
+
+            <!-- Galería Fotográfica -->
+            <section class="space-y-4">
+                <header
+                    class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
+                >
+                    <h2
+                        class="text-lg font-bold text-white flex items-center gap-2"
+                    >
+                        <span class="w-2 h-2 rounded-full bg-sky-500"></span>
+                        Atlas Fotográfico (Ejes I-IV)
+                    </h2>
+                    <span
+                        class="text-xs text-slate-400 font-mono"
+                        id="gallery-count"
+                        >0 fotos</span
+                    >
+                </header>
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 gap-3 gallery-grid"
+                    id="gallery-grid"
+                ></div>
+            </section>
+        </main>
+
+        <!-- Lightbox Modal -->
+        <div
+            id="lightbox"
+            class="fixed inset-0 bg-black/95 hidden z-50 flex items-center justify-center p-2 swipe-area"
+            onclick="closeLightbox()"
+        >
+            <div
+                class="max-w-full max-h-[90vh] w-auto bg-slate-900 rounded-xl overflow-hidden border border-slate-800 relative"
+                onclick="event.stopPropagation()"
+            >
+                <div
+                    class="p-3 flex justify-between items-center border-b border-slate-800"
+                >
+                    <h3
+                        id="lightbox-title"
+                        class="text-sm font-bold text-sky-400 truncate max-w-[80%]"
+                    ></h3>
+                    <button
+                        onclick="closeLightbox()"
+                        class="text-slate-400 hover:text-white text-xl font-bold p-1"
+                    >
+                        &times;
+                    </button>
+                </div>
+                <div class="p-1 bg-black flex justify-center items-center">
+                    <img
+                        id="lightbox-img"
+                        src=""
+                        alt=""
+                        class="lightbox-img max-h-[75vh] max-w-[95vw] object-contain"
+                    />
+                </div>
+                <div
+                    class="flex justify-center gap-2 p-3 border-t border-slate-800"
+                >
+                    <button
+                        id="lb-prev"
+                        class="text-slate-400 hover:text-white text-2xl font-bold p-2"
+                        aria-label="Anterior"
+                    >
+                        &#9664;
+                    </button>
+                    <button
+                        id="lb-next"
+                        class="text-slate-400 hover:text-white text-2xl font-bold p-2"
+                        aria-label="Siguiente"
+                    >
+                        &#9654;
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="bg-slate-900 border-t border-slate-800 py-4">
+            <div
+                class="max-w-4xl mx-auto px-4 text-center text-xs text-slate-500"
+            >
+                Comité Técnico Vecinal de Co-Custodia Edificio ENKA — 2026
+            </div>
+        </footer>
+
+        <script type="module">
+            import { galleryData } from "./gallery-data.js";
+            import { authGateway } from "./auth.js";
+
+            // Estado
+            let currentFilter = "all";
+            let currentLightboxIndex = -1;
+            let filteredGallery = [...galleryData];
+
+            // DOM Elements
+            const galleryGrid = document.getElementById("gallery-grid");
+            const filterButtons = document.querySelectorAll("[data-filter]");
+            const galleryCount = document.getElementById("gallery-count");
+            const lightbox = document.getElementById("lightbox");
+            const lightboxImg = document.getElementById("lightbox-img");
+            const lightboxTitle = document.getElementById("lightbox-title");
+            const lbPrev = document.getElementById("lb-prev");
+            const lbNext = document.getElementById("lb-next");
+            const authForm = document.getElementById("auth-form");
+            const authError = document.getElementById("auth-error");
+            const authSection = document.getElementById("auth-section");
+            const resultSection = document.getElementById("result-section");
+            const resultContent = document.getElementById("result-content");
+            const resultApt = document.getElementById("result-apt");
+            const btnLogout = document.getElementById("btn-logout");
+
+            // Ejes labels
+            const ejeLabels = {
+                1: "Eje I: Contexto y Fachada",
+                2: "Eje II: Autogestión Azotea",
+                3: "Eje III: Patologías Estructurales",
+                4: "Eje IV: Evaluación de Riesgo Civil",
+            };
+
+            // Render Gallery
+            function renderGallery() {
+                galleryGrid.innerHTML = filteredGallery
+                    .map(
+                        (img, idx) => `
+                <div class="gallery-card ${img.ejeClass} bg-slate-800 rounded-xl overflow-hidden border border-slate-700 shadow-lg hover:border-sky-500 transition-all" data-idx="${idx}">
+                    <img src="${img.thumb}" alt="${img.alt}" class="w-full h-48 object-cover" loading="lazy">
+                    <div class="p-3">
+                        <span class="inline-block text-xs font-semibold px-2 py-1 rounded-full bg-sky-950 text-sky-400 border border-sky-800 mb-1">
+                            ${img.ejeLabel}
+                        </span>
+                        <p class="text-[10px] text-slate-300 font-mono truncate">${img.name}</p>
+                    </div>
+                </div>
+            `,
+                    )
+                    .join("");
+
+                galleryCount.textContent = `${filteredGallery.length} fotos`;
+
+                // Click handlers para lightbox
+                document
+                    .querySelectorAll(".gallery-card")
+                    .forEach((card, idx) => {
+                        card.style.cursor = "pointer";
+                        card.onclick = () => openLightbox(idx);
+                    });
+            }
+
+            // Filter Logic
+            function filterGallery(category) {
+                currentFilter = category;
+                filterButtons.forEach((btn) => {
+                    btn.classList.toggle(
+                        "active",
+                        btn.dataset.filter === category,
+                    );
+                });
+                if (category === "all") {
+                    filteredGallery = [...galleryData];
+                } else {
+                    filteredGallery = galleryData.filter(
+                        (img) => img.ejeClass === category,
+                    );
+                }
+                renderGallery();
+            }
+
+            filterButtons.forEach((btn) => {
+                btn.onclick = () => filterGallery(btn.dataset.filter);
+            });
+
+            // Lightbox
+            function openLightbox(index) {
+                currentLightboxIndex = index;
+                const img = filteredGallery[index];
+                lightboxImg.src = img.full;
+                lightboxTitle.textContent = `${img.alt} — ${img.ejeLabel}`;
+                lightbox.classList.remove("hidden");
+                document.body.style.overflow = "hidden";
+            }
+
+            function closeLightbox() {
+                lightbox.classList.add("hidden");
+                lightboxImg.src = "";
+                document.body.style.overflow = "";
+                currentLightboxIndex = -1;
+            }
+
+            function navigateLightbox(delta) {
+                if (currentLightboxIndex === -1) return;
+                const newIndex =
+                    (currentLightboxIndex + delta + filteredGallery.length) %
+                    filteredGallery.length;
+                openLightbox(newIndex);
+            }
+
+            lbPrev.onclick = (e) => {
+                e.stopPropagation();
+                navigateLightbox(-1);
+            };
+            lbNext.onclick = (e) => {
+                e.stopPropagation();
+                navigateLightbox(1);
+            };
+            lightbox.onclick = closeLightbox;
+
+            // Keyboard navigation
+            document.addEventListener("keydown", (e) => {
+                if (lightbox.classList.contains("hidden")) return;
+                if (e.key === "Escape") closeLightbox();
+                if (e.key === "ArrowLeft") navigateLightbox(-1);
+                if (e.key === "ArrowRight") navigateLightbox(1);
+            });
+
+            // Touch swipe para lightbox
+            let touchStartX = 0;
+            lightbox.addEventListener("touchstart", (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+            lightbox.addEventListener("touchend", (e) => {
+                const diff = e.changedTouches[0].screenX - touchStartX;
+                if (Math.abs(diff) > 50) navigateLightbox(diff > 0 ? -1 : 1);
+            });
+
+            // Auth 3-Factores
+            authForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                authError.classList.add("hidden");
+
+                const formData = new FormData(authForm);
+                const payload = {
+                    telefono: formData.get("telefono"),
+                    apartamento: formData.get("apartamento"),
+                    nombre_completo: formData.get("nombre_completo"),
+                };
+
+                try {
+                    const response = await fetch("/api/auth/vista-ciega", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload),
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(
+                            data.message ||
+                                data.error ||
+                                "Credenciales inválidas",
+                        );
+                    }
+
+                    // Éxito: mostrar informe
+                    authSection.classList.add("hidden");
+                    resultSection.classList.remove("hidden");
+                    resultApt.textContent = payload.apartamento;
+                    resultContent.innerHTML = data.documento
+                        ? `<a href="${data.documento.signed_url}" target="_blank" class="block bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-lg text-center font-semibold">
+                        📄 Abrir Informe Estructural (Válido 15 min)
+                      </a>`
+                        : `<p class="text-amber-400">Informe no disponible aún. Contacte a administración.</p>`;
+                } catch (err) {
+                    authError.textContent = err.message;
+                    authError.classList.remove("hidden");
+                }
+            });
+
+            btnLogout.onclick = () => {
+                resultSection.classList.add("hidden");
+                authSection.classList.remove("hidden");
+                authForm.reset();
+            };
+
+            // Inicialización
+            renderGallery();
+
+            // Service Worker registration (PWA)
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker.register("/sw.js").catch(console.error);
+            }
+        </script>
+    </body>
+</html>
