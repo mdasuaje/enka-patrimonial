@@ -25,6 +25,7 @@
             href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏢</text></svg>"
         />
         <style>
+            /* ===== VARIABLES Y BASE ===== */
             * {
                 box-sizing: border-box;
                 margin: 0;
@@ -69,7 +70,32 @@
                 text-decoration: underline;
             }
 
-            /* Layout */
+            /* ===== WEB COMPONENT: enka-blind-gate ===== */
+            enka-blind-gate {
+                display: block;
+                isolation: isolate;
+            }
+            /* Estado oculto por defecto (fuera del DOM visual) */
+            enka-blind-gate[estado="oculto"] {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+                border: 0;
+            }
+            enka-blind-gate[estado="visible"] {
+                position: relative;
+                width: auto;
+                height: auto;
+                padding: 2rem;
+                margin: 1rem 0;
+            }
+
+            /* ===== LAYOUT PRINCIPAL ===== */
             .app {
                 display: flex;
                 flex-direction: column;
@@ -127,7 +153,7 @@
                 gap: 1.5rem;
             }
 
-            /* Tabs */
+            /* ===== TABS ===== */
             .tabs {
                 display: flex;
                 background: var(--card);
@@ -157,7 +183,7 @@
                 background: rgba(14, 165, 233, 0.05);
             }
 
-            /* Panels */
+            /* ===== PANELS ===== */
             .panel {
                 display: none;
                 padding: 1.5rem;
@@ -177,7 +203,7 @@
                 }
             }
 
-            /* Public Panel */
+            /* ===== PUBLIC SECTION (visible por defecto) ===== */
             .public-section {
                 display: flex;
                 flex-direction: column;
@@ -221,7 +247,8 @@
                 border: none;
             }
 
-            /* Private Panel - Auth Form */
+            /* ===== PRIVATE SECTION (dentro de Shadow DOM) ===== */
+            /* El auth form y result area quedan encapsulados en el Web Component */
             .auth-form {
                 max-width: 380px;
                 margin: 0 auto;
@@ -306,8 +333,6 @@
             .error-msg.visible {
                 display: block;
             }
-
-            /* Result Area */
             .result-area {
                 display: none;
                 margin-top: 1.5rem;
@@ -367,7 +392,7 @@
                 border: none;
             }
 
-            /* Loading */
+            /* ===== LOADING ===== */
             .loading {
                 display: none;
                 text-align: center;
@@ -402,7 +427,7 @@
                 margin-top: auto;
             }
 
-            /* Responsive */
+            /* ===== RESPONSIVE ===== */
             @media (max-width: 480px) {
                 .header-inner {
                     flex-direction: column;
@@ -417,7 +442,7 @@
                 }
             }
 
-            /* Offline indicator */
+            /* ===== OFFLINE INDICATOR ===== */
             .offline-banner {
                 display: none;
                 background: #fef3c7;
@@ -453,7 +478,7 @@
                         d="M1 1l22 22M16.72 11.06A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-1.43"
                     />
                     <line x1="12" y1="20" x2="12.01" y2="20" />
-                </svg>
+                </span>
                 <span>Sin conexión - Modo offline activo</span>
             </div>
 
@@ -468,10 +493,9 @@
                             stroke-linecap="round"
                             stroke-linejoin="round"
                         >
-                            <path
-                                d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
-                            />
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
                             <polyline points="9 22 9 12 15 12 15 22" />
+                            <line x1="2" y1="9" x2="22" y2="9" />
                         </svg>
                         <span>ENKA Inspection Hub</span>
                     </div>
@@ -480,72 +504,7 @@
             </header>
 
             <main>
-                <div class="tabs" role="tablist" aria-label="Secciones del Hub">
-                    <button
-                        class="tab-btn active"
-                        role="tab"
-                        aria-selected="true"
-                        aria-controls="panel-public"
-                        id="tab-public"
-                        data-tab="public"
-                    >
-                        <svg
-                            width="18"
-                            height="18"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            style="
-                                display: inline;
-                                vertical-align: middle;
-                                margin-right: 0.4rem;
-                            "
-                        >
-                            <path
-                                d="M18 13a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2z"
-                            />
-                            <path d="M2 9V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4" />
-                            <line x1="2" y1="9" x2="22" y2="9" />
-                        </svg>
-                        Público
-                    </button>
-                    <button
-                        class="tab-btn"
-                        role="tab"
-                        aria-selected="false"
-                        aria-controls="panel-private"
-                        id="tab-private"
-                        data-tab="private"
-                    >
-                        <svg
-                            width="18"
-                            height="18"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            style="
-                                display: inline;
-                                vertical-align: middle;
-                                margin-right: 0.4rem;
-                            "
-                        >
-                            <rect
-                                x="3"
-                                y="11"
-                                width="18"
-                                height="11"
-                                rx="2"
-                                ry="2"
-                            />
-                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                        </svg>
-                        Privado (Vecinos)
-                    </button>
-                </div>
-
-                <!-- Panel Público -->
+                <!-- === TAB PUBLICO (siempre visible) === -->
                 <section
                     class="panel active"
                     id="panel-public"
@@ -582,65 +541,25 @@
                                     stroke="currentColor"
                                     stroke-width="2"
                                 >
-                                    <rect
-                                        x="3"
-                                        y="3"
-                                        width="18"
-                                        height="18"
-                                        rx="2"
-                                    />
+                                    <rect x="3" y="3" width="18" height="18" rx="2" />
                                     <path d="M3 9h18" />
                                     <path d="M9 21V9" />
                                 </svg>
                                 Documentos Oficiales
                             </h3>
                             <p>
-                                Gaceta Oficial G.O. 39.272 · Dossier Fotográfico
-                                · ANEXO TÉCNICO · Carta Solicitud Apoyo v3
+                                Gaceta Oficial G.O. 39.272 · Dossier Fotográfico ·
+                                ANEXO TÉCNICO · Carta Solicitud Apoyo v3
                             </p>
                         </article>
-                        <div class="iframe-wrapper">
-                            <iframe
-                                src="https://drive.google.com/embeddedfolderview?id=1oq-3k-wP2NEOUZrRoPTJXtxlBwbWc0OY#list"
-                                title="Expediente Técnico Público - Edificio ENKA"
-                                allow="fullscreen"
-                                loading="lazy"
-                            >
-                            </iframe>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Panel Privado - Vista Ciega -->
-                <section
-                    class="panel"
-                    id="panel-private"
-                    role="tabpanel"
-                    aria-labelledby="tab-private"
-                    hidden
-                >
-                    <div class="auth-form" id="authFormContainer">
-                        <h2
-                            style="
-                                text-align: center;
-                                margin-bottom: 0.5rem;
-                                font-size: 1.25rem;
-                            "
-                        >
-                            Acceso Vecino - Vista Ciega
-                        </h2>
-                        <p
-                            style="
-                                text-align: center;
-                                color: var(--muted);
-                                font-size: 0.9rem;
-                                margin-bottom: 1.5rem;
-                            "
-                        >
-                            Ingrese sus 3 credenciales para acceder a su informe
-                            financiero individual.
+                                        <!-- Shadow DOM Web Component: enka-blind-gate -->
+                <enka-blind-gate id="financialGate" estado="oculto">
+                    <!-- Conteúdo cifrado e encapsulado - só acessível após autenticação -->
+                    <div id="shadowAuthContainer" class="auth-form" estilo="display:none">
+                        <h2 style="text-align:center;margin-bottom:0.5rem;font-size:1.25mm">Acceso Vecino - Vista Ciega</h2>
+                        <p style="text-align:center;color:var(--muted);font-size:0.9rem;margin-bottom:1.5rem">
+                            Ingrese sus 3 credenciales para acceder a su informe financiero individual.
                         </p>
-
                         <form id="authForm" novalidate>
                             <div class="form-group">
                                 <label for="phone">Teléfono (Venezuela)</label>
@@ -665,119 +584,137 @@
                                         pattern="^\+58\s?\d{3}\s?\d{3}\s?\d{4}$"
                                         aria-describedby="phoneHelp"
                                     />
+                                    <small
+                                        id="phoneHelp"
+                                        style="color:var(--muted);font-size:0.75rem;display:block;margin-top:0.25rem"
+                                    >Formato: +58 4XX XXX XXXX</small>
                                 </div>
-                                <small
-                                    id="phoneHelp"
-                                    style="
-                                        color: var(--muted);
-                                        font-size: 0.75rem;
-                                        display: block;
-                                        margin-top: 0.25rem;
-                                    "
-                                    >Formato: +58 4XX XXX XXXX</small
-                                >
-                            </div>
-
-                            <div class="form-group">
-                                <label for="apto">Apartamento</label>
-                                <div class="input-wrapper">
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                    >
-                                        <path
-                                            d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
-                                        />
-                                        <polyline
-                                            points="9 22 9 12 15 12 15 22"
-                                        />
-                                    </svg>
-                                    <select
-                                        id="apto"
-                                        name="apto"
-                                        required
-                                        aria-describedby="aptoHelp"
-                                    >
-                                        <option value="">
-                                            Seleccione apartamento
-                                        </option>
-                                        <option value="PB">PB</option>
-                                        <script>
-                                            for (let i = 1; i <= 18; i++)
-                                                document.write(
-                                                    '<option value="' +
-                                                        i +
-                                                        '">' +
-                                                        i +
-                                                        "</option>",
-                                                );
-                                        </script>
-                                    </select>
+                                <div class="form-group">
+                                    <label for="apto">Apartamento</label>
+                                    <div class="input-wrapper">
+                                        <select
+                                            id="apto"
+                                            name="apto"
+                                            required
+                                            aria-describedby="aptoHelp"
+                                        >
+                                            <option value="">Seleccione apartamento</option>
+                                            <option value="PB">PB</option>
+                                            <script>
+                                                for (let i = 1; i <= 18; i++)
+                                                    document.write(
+                                                        '<option value="' +
+                                                            i +
+                                                            '">' +
+                                                            i +
+                                                            "</option>",
+                                                    );
+                                            </script>
+                                        </select>
+                                        <small
+                                            id="aptoHelp"
+                                            style="color:var(--muted);font-size:0.75rem;display:block;margin-top:0.25rem"
+                                        >PB, 1 al 18</small>
+                                    </div>
                                 </div>
-                                <small
-                                    id="aptoHelp"
-                                    style="
-                                        color: var(--muted);
-                                        font-size: 0.75rem;
-                                        display: block;
-                                        margin-top: 0.25rem;
-                                    "
-                                    >PB, 1 al 18</small
-                                >
-                            </div>
-
-                            <div class="form-group">
-                                <label for="name">Nombre y Apellido</label>
-                                <div class="input-wrapper">
-                                    <svg
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                    >
-                                        <path
-                                            d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
+                                <div class="form-group">
+                                    <label for="name">Nombre y Apellido</label>
+                                    <div class="input-wrapper">
+                                        <input
+                                            type="text"
+                                            id="name"
+                                            name="name"
+                                            placeholder="Juan Pérez"
+                                            required
+                                            autocomplete="name"
+                                            minlength="3"
+                                            maxlength="100"
                                         />
-                                        <circle cx="12" cy="7" r="4" />
-                                    </svg>
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        name="name"
-                                        placeholder="Juan Pérez"
-                                        required
-                                        autocomplete="name"
-                                        minlength="3"
-                                        maxlength="100"
-                                    />
+                                    </div>
                                 </div>
-                            </div>
 
-                            <button type="submit" class="btn" id="submitBtn">
-                                <span class="btn-text"
-                                    >Acceder a mi Informe</span
-                                >
-                                <span class="btn-loading" style="display: none"
-                                    >Verificando...</span
-                                >
-                            </button>
+                                <button type="submit" class="btn" id="submitBtn">
+                                    <span class="btn-text">Acceder a mi Informe</span>
+                                    <span class="btn-loading" style="display:none">Verificando...</span>
+                                </button>
+                                <div class="error-msg" id="errorMsg" role="alert" estilo="display:none"></div>
+                            </form>
                             <div
-                                class="error-msg"
-                                id="errorMsg"
-                                role="alert"
-                            ></div>
-                        </form>
+                                class="result-area"
+                                id="resultArea"
+                                role="region"
+                                aria-label="Resultado de autenticación"
+                                hidden
+                            >
+                                <div class="result-header">
+                                    <h3>
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                        >
+                                            <path
+                                                d="M22 11.08V12a10 10 0 1 1-5.93-9.14"
+                                            />
+                                            <polyline
+                                                points="22 4 12 14.01 9 11.01"
+                                            />
+                                        </svg>
+                                        Acceso Autorizado
+                                    </h3>
+                                    <button
+                                        type="button"
+                                        class="btn-ghost"
+                                        id="logoutBtn"
+                                    >
+                                        Cerrar sesión
+                                    </button>
+                                </div>
+                                <div class="iframe-container">
+                                    <iframe
+                                        id="lookerIframe"
+                                        src=""
+                                        title="Dashboard Financiero - Looker Studio"
+                                        allow="fullscreen"
+                                        sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                                    ></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </enka-blind-gate>
 
-                        <div
-                            class="result-area"
-                            id="resultArea"
-                            role="region"
-                            aria-label="Resultado de autenticación"
-                            hidden
+                        <!-- Panel Público -->
+                        <section
+                            class="panel active"
+                            id="panel-public"
+                            role="tabpanel"
+                            aria-labelledby="tab-public"
                         >
-                            <div class="result-header">
+                            <div class="public-section">
+                                <article class="info-card">
+                                    <h3>
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                        >
+                                            <path
+                                                d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
+                                        />
+                                        <path d="M9 12l2 2 4-4" />
+                                    </svg>
+                                    Expediente Técnico - Edificio ENKA
+                                </h3>
+                                <p>
+                                    Bien de Interés Cultural (Gaceta Oficial N°
+                                    39.272, Reg. 734). Acceso público para
+                                    autoridades e instituciones.
+                                </p>
+                            </article>
+                            <article class="info-card">
                                 <h3>
                                     <svg
                                         viewBox="0 0 24 24"
@@ -785,63 +722,564 @@
                                         stroke="currentColor"
                                         stroke-width="2"
                                     >
-                                        <path
-                                            d="M22 11.08V12a10 10 0 1 1-5.93-9.14"
-                                        />
-                                        <polyline
-                                            points="22 4 12 14.01 9 11.01"
-                                        />
+                                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                                        <path d="M3 9h18" />
+                                        <path d="M9 21V9" />
                                     </svg>
-                                    Acceso Autorizado
+                                    Documentos Oficiales
                                 </h3>
-                                <button
-                                    type="button"
-                                    class="btn-ghost"
-                                    id="logoutBtn"
-                                >
-                                    Cerrar sesión
-                                </button>
-                            </div>
-                            <div class="iframe-container">
+                                <p>
+                                    Gaceta Oficial G.O. 39.272 · Dossier Fotográfico ·
+                                    ANEXO TÉCNICO · Carta Solicitud Apoyo v3
+                                </p>
+                            </article>
+                            <!-- Iframe público sin cifrar (aparece siempre) -->
+                            <div class="iframe-wrapper">
                                 <iframe
-                                    id="lookerIframe"
-                                    src=""
-                                    title="Dashboard Financiero - Looker Studio"
+                                    src="https://drive.google.com/embeddedfolderview?id=1oq-3k-wP2NEOUZrRoPTJXtxlBwbWc0OY#list"
+                                    title="Expediente Técnico Público - Edificio ENKA"
                                     allow="fullscreen"
-                                    sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-                                ></iframe>
+                                    loading="lazy"
+                                >
+                                </iframe>
                             </div>
                         </div>
-                    </div>
+                    </section>
 
-                    <div
-                        class="loading"
-                        id="loading"
-                        role="status"
-                        aria-live="polite"
+                    <!-- Panel Privado (dentro de Shadow DOM, oculto hasta autenticación) -->
+                    <section
+                        class="panel"
+                        id="panel-private"
+                        role="tabpanel"
+                        aria-labelledby="tab-private"
+                        hidden
                     >
-                        <div class="spinner"></div>
-                        <p>Verificando credenciales...</p>
-                    </div>
-                </section>
-            </main>
+                        <!-- Web Component encapsula auth + resultado -->
+                        <enka-blind-gate id="financialGate" estado="oculto">
+                            <!-- Conteúdo cifrado e encapsulado -->
+                            <div id="shadowAuthContainer" class="auth-form" estilo="display:none">
+                                <h2
+                                    style="
+                                        text-align: center;
+                                        margin-bottom: 0.5rem;
+                                        font-size: 1.25rem
+                                    "
+                                >
+                                    Acceso Vecino - Vista Ciega
+                                </h2>
+                                <p
+                                    style="
+                                        text-align: center;
+                                        color: var(--muted);
+                                        font-size: 0.9rem;
+                                        margin-bottom: 1.5rem
+                                    "
+                                >
+                                    Ingrese sus 3 credenciales para acceder a su informe
+                                    financiero individual.
+                                </p>
+                                <form id="authForm" novalidate>
+                                    <div class="form-group">
+                                        <label for="phone">Teléfono (Venezuela)</label>
+                                        <div class="input-wrapper">
+                                            <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                            >
+                                                <path
+                                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 0 2.28.8 12.9 12.9 0 0 0 3.71.5 2 2 0 0 1 2 1.72V14"
+                                                />
+                                            </svg>
+                                            <input
+                                                type="tel"
+                                                id="phone"
+                                                name="phone"
+                                                placeholder="+58 412 123 4567"
+                                                required
+                                                autocomplete="tel"
+                                                pattern="^\+58\s?\d{3}\s?\d{3}\s?\d{4}$"
+                                                aria-describedby="phoneHelp"
+                                            />
+                                            <small
+                                                id="phoneHelp"
+                                                style="
+                                                    color: var(--muted);
+                                                    font-size: 0.75rem;
+                                                    display: block;
+                                                    margin-top: 0.25rem
+                                                "
+                                            >Formato: +58 4XX XXX XXXX</small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="apto">Apartamento</label>
+                                            <div class="input-wrapper">
+                                                <select
+                                                    id="apto"
+                                                    name="apto"
+                                                    required
+                                                    aria-describedby="aptoHelp"
+                                                >
+                                                    <option value="">Seleccione apartamento</option>
+                                                    <option value="PB">PB</option>
+                                                    <script>
+                                                        for (let i = 1; i <= 18; i++)
+                                                            document.write(
+                                                                '<option value="' +
+                                                                    i +
+                                                                    '">' +
+                                                                    i +
+                                                                    "</option>",
+                                                            );
+                                                    </script>
+                                                </select>
+                                                <small
+                                                    id="aptoHelp"
+                                                    style="
+                                                        color: var(--muted);
+                                                        font-size: 0.75rem;
+                                                        display: block;
+                                                        margin-top: 0.25rem
+                                                    "
+                                                    >PB, 1 al 18</small>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="name">Nombre y Apellido</label>
+                                            <div class="input-wrapper">
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    name="name"
+                                                    placeholder="Juan Pérez"
+                                                    required
+                                                    autocomplete="name"
+                                                    minlength="3"
+                                                    maxlength="100"
+                                                />
+                                            </div>
+                                        </div>
 
-            <footer>
-                <p>
-                    Comité Técnico Vecinal de Co-Custodia Edificio ENKA — 2026
-                </p>
-                <p style="margin-top: 0.5rem; font-size: 0.7rem">
-                    Bien de Interés Cultural · G.O. 39.272 · Régimen Comunidad
-                    de Bienes (Art. 759/762 CC)
-                </p>
-            </footer>
-        </div>
+                                        <button
+                                            type="submit"
+                                            class="btn"
+                                            id="submitBtn"
+                                        >
+                                            <span class="btn-text"
+                                                >Acceder a mi Informe</span
+                                            >
+                                            <span
+                                                class="btn-loading"
+                                                style="display: none"
+                                                >Verificando...</span
+                                            >
+                                        </button>
+                                        <div
+                                            class="error-msg"
+                                            id="errorMsg"
+                                            role="alert"
+                                            estilo="display:none"
+                                        ></div>
+                                    </form>
+                                    <div
+                                        class="result-area"
+                                        id="resultArea"
+                                        role="region"
+                                        aria-label="Resultado de autenticación"
+                                        hidden
+                                    >
+                                        <div class="result-header">
+                                            <h3>
+                                                <svg
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    stroke-width="2"
+                                                >
+                                                    <path
+                                                        d="M22 11.08V12a10 10 0 1 1-5.93-9.14"
+                                                    />
+                                                    <polyline
+                                                        points="22 4 12 14.01 9 11.01"
+                                                    />
+                                                </svg>
+                                                Acceso Autorizado
+                                            </h3>
+                                            <button
+                                                type="button"
+                                                class="btn-ghost"
+                                                id="logoutBtn"
+                                            >
+                                                Cerrar sesión
+                                            </button>
+                                        </div>
+                                        <div class="iframe-container">
+                                            <iframe
+                                                id="lookerIframe"
+                                                src=""
+                                                title="Dashboard Financiero - Looker Studio"
+                                                allow="fullscreen"
+                                                sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                                            ></iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </enka-blind-gate>
+                        </section>
+                    </main>
 
-        <script src="app.js"></script>
-        <script>
-            if ("serviceWorker" in navigator) {
-                navigator.serviceWorker.register("sw.js").catch(console.error);
-            }
-        </script>
-    </body>
-</html>
+                    <footer>
+                        <p>
+                            Comité Técnico Vecinal de Co-Custodia Edificio ENKA — 2026
+                        </p>
+                        <p
+                            style="margin-top: 0.5rem; font-size: 0.7rem"
+                        >
+                            Bien de Interés Cultural · G.O. 39.272 · Régimen Comunidad
+                            de Bienes (Art. 759/762 CC)
+                        </p>
+                    </footer>
+                </div>
+
+                <script>
+                    // Register the custom element
+                    if (!customElements.get("enka-blind-gate")) {
+                        customElements.define(
+                            "enka-blind-gate",
+                            class extends HTMLElement {
+                                constructor() {
+                                    super();
+                                    this.attachShadow({ mode: "closed" });
+                                }
+
+                                connectedCallback() {
+                                    // Render initial state - hidden gate
+                                    this.render("oculto");
+                                }
+
+                                set estado(estado) {
+                                    this.setAttribute("estado", estado);
+                                    this.render(estado);
+                                }
+
+                                get estado() {
+                                    return this.getAttribute("estado");
+                                }
+
+                                render(estado) {
+                                    const shadow = this.shadowRoot;
+                                    if (estado === "oculto") {
+                                        // Esconder completely - no renderizar nada visible
+                                        if (shadow.children.length > 0) {
+                                            shadow.innerHTML = "";
+                                        }
+                                        this.setAttribute("visivo", "oculto");
+                                    } else if (estado === "visible") {
+                                        // Mostrar auth form dentro de Shadow DOM
+                                        if (shadow.children.length === 0) {
+                                            shadow.innerHTML = `
+                                                <style>
+                                                    /* Styles for auth form inside shadow DOM */
+                                                    .auth-form { max-width: 380px; margin: 0 auto; }
+                                                    .form-group { margin-bottom: 1rem; }
+                                                    label { display: block; font-size: 0.85rem; font-weight: 500; color: var(--fg); margin-bottom: 0.375rem; }
+                                                    .input-wrapper { position: relative; }
+                                                    .input-wrapper svg {
+                                                        position: absolute;
+                                                        left: 12px;
+                                                        top: 50%;
+                                                        transform: translateY(-50%);
+                                                        width: 20px;
+                                                        height: 20px;
+                                                        color: var(--muted);
+                                                        pointer-events: none;
+                                                    }
+                                                    input {
+                                                        width: 100%;
+                                                        padding: 0.875rem 1rem 0.875rem 44px;
+                                                        background: var(--card);
+                                                        border: 1px solid var(--border);
+                                                        border-radius: 10px;
+                                                        color: var(--fg);
+                                                        font-size: 1rem;
+                                                        font-family: inherit;
+                                                        transition: border-color 0.2s, box-shadow 0.2s;
+                                                    }
+                                                    input:focus {
+                                                        outline: none;
+                                                        border-color: var(--accent);
+                                                        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
+                                                    }
+                                                    input::placeholder {
+                                                        color: var(--muted);
+                                                        opacity: 0.7;
+                                                    }
+                                                    .btn {
+                                                        width: 100%;
+                                                        padding: 0.875rem;
+                                                        background: var(--accent);
+                                                        color: #001524;
+                                                        border: none;
+                                                        border-radius: 10px;
+                                                        font-weight: 700;
+                                                        font-size: 1rem;
+                                                        cursor: pointer;
+                                                        transition: background 0.2s, transform 0.1s;
+                                                    }
+                                                    .btn:hover { background: var(--accent-hover); }
+                                                    .btn:active { transform: scale(0.98); }
+                                                    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+                                                    .error-msg {
+                                                        color: var(--error);
+                                                        font-size: 0.85rem;
+                                                        margin-top: 0.5rem;
+                                                        text-align: center;
+                                                        min-height: 1.25rem;
+                                                        display: none;
+                                                    }
+                                                    .error-msg.visible { display: block; }
+                                                    .result-area {
+                                                        display: none;
+                                                        margin-top: 1.5rem;
+                                                        padding: 1.25rem;
+                                                        background: var(--card);
+                                                        border: 1px solid var(--border);
+                                                        border-radius: 12px;
+                                                    }
+                                                    .result-area.visible { display: block; }
+                                                    .result-header {
+                                                        display: flex;
+                                                        justify-content: space-between;
+                                                        align-items: center;
+                                                        margin-bottom: 1rem;
+                                                        padding-bottom: 0.75rem;
+                                                        border-bottom: 1px solid var(--border);
+                                                    }
+                                                    .result-header h3 {
+                                                        font-size: 1rem;
+                                                        font-weight: 600;
+                                                        display: flex;
+                                                        align-items: center;
+                                                        gap: 0.5rem;
+                                                    }
+                                                    .result-header h3 svg {
+                                                        width: 20px;
+                                                        height: 20px;
+                                                        color: var(--success);
+                                                    }
+                                                    .btn-ghost {
+                                                        padding: 0.5rem 1rem;
+                                                        background: transparent;
+                                                        color: var(--muted);
+                                                        border: 1px solid var(--border);
+                                                        border-radius: 8px;
+                                                        font-size: 0.85rem;
+                                                        cursor: pointer;
+                                                        transition: all 0.2s;
+                                                    }
+                                                    .btn-ghost:hover {
+                                                        background: var(--border);
+                                                        color: var(--fg);
+                                                    }
+                                                    .iframe-container {
+                                                        width: 100%;
+                                                        aspect-ratio: 16/9;
+                                                        border: 1px solid var(--border);
+                                                        border-radius: 10px;
+                                                        overflow: hidden;
+                                                        background: var(--bg);
+                                                    }
+                                                    .iframe-container iframe {
+                                                        width: 100%;
+                                                        height: 100%;
+                                                        border: none;
+                                                    }
+                                                </style>
+                                                <div id="shadowAuth" class="auth-form">
+                                                    <h2
+                                                        style="
+                                                            text-align: center;
+                                                            margin-bottom: 0.5rem;
+                                                            font-size: 1.25rem
+                                                        "
+                                                    >
+                                                        Acceso Vecino - Vista Ciega
+                                                    </h2>
+                                                    <p
+                                                        style="
+                                                            text-align: center;
+                                                            color: var(--muted);
+                                                            font-size: 0.9rem;
+                                                            margin-bottom: 1.5rem
+                                                        "
+                                                    >
+                                                        Ingrese sus 3 credenciales para acceder a su informe
+                                                        financiero individual.
+                                                    </p>
+                                                    <form id="authForm" novalidate>
+                                                        <div class="form-group">
+                                                            <label for="phone">Teléfono (Venezuela)</label>
+                                                            <div class="input-wrapper">
+                                                                <svg
+                                                                    viewBox="0 0 24 24"
+                                                                    fill="none"
+                                                                    stroke="currentColor"
+                                                                    stroke-width="2"
+                                                                >
+                                                                    <path
+                                                                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 0 2.28.8 12.9 12.9 0 0 0 3.71.5 2 2 0 0 1 2 1.72V14"
+                                                                    />
+                                                                </svg>
+                                                                <input
+                                                                    type="tel"
+                                                                    id="phone"
+                                                                    name="phone"
+                                                                    placeholder="+58 412 123 4567"
+                                                                    required
+                                                                    autocomplete="tel"
+                                                                    pattern="^\+58\s?\d{3}\s?\d{3}\s?\d{4}$"
+                                                                    aria-describedby="phoneHelp"
+                                                                />
+                                                                <small
+                                                                    id="phoneHelp"
+                                                                    style="
+                                                                        color: var(--muted);
+                                                                        font-size: 0.75rem;
+                                                                        display: block;
+                                                                        margin-top: 0.25rem
+                                                                    "
+                                                                >Formato: +58 4XX XXX XXXX</small>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="apto">Apartamento</label>
+                                                                <div class="input-wrapper">
+                                                                    <select
+                                                                        id="apto"
+                                                                        name="apto"
+                                                                        required
+                                                                        aria-describedby="aptoHelp"
+                                                                    >
+                                                                        <option value="">Seleccione apartamento</option>
+                                                                        <option value="PB">PB</option>
+                                                                        <script>
+                                                            for (let i = 1; i <= 18; i++)
+                                                                document.write(
+                                                                    '<option value="' +
+                                                                        i +
+                                                                        '">' +
+                                                                        i +
+                                                                        "</option>",
+                                                                );
+                                                        </script>
+                                                    </select>
+                                                <small
+                                                    id="aptoHelp"
+                                                    style="
+                                                        color: var(--muted);
+                                                        font-size: 0.75rem;
+                                                        display: block;
+                                                        margin-top: 0.25rem
+                                                    "
+                                                    >PB, 1 al 18</small>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="name">Nombre y Apellido</label>
+                                            <div class="input-wrapper">
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    name="name"
+                                                    placeholder="Juan Pérez"
+                                                    required
+                                                    autocomplete="name"
+                                                    minlength="3"
+                                                    maxlength="100"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <button
+                                            type="submit"
+                                            class="btn"
+                                            id="submitBtn"
+                                        >
+                                            <span class="btn-text"
+                                                >Acceder a mi Informe</span
+                                            >
+                                            <span
+                                                class="btn-loading"
+                                                style="display: none"
+                                                >Verificando...</span
+                                            >
+                                        </button>
+                                                        <div
+                                                            class="error-msg"
+                                                            id="errorMsg"
+                                                            role="alert"
+                                                            estilo="display:none"
+                                                        ></div>
+                                                    </form>
+                                                    <div
+                                                        class="result-area"
+                                                        id="resultArea"
+                                                        role="region"
+                                                        aria-label="Resultado de autenticación"
+                                                        hidden
+                                                    >
+                                                        <div class="result-header">
+                                                            <h3>
+                                                                <svg
+                                                                    viewBox="0 0 24 24"
+                                                                    fill="none"
+                                                                    stroke="currentColor"
+                                                                    stroke-width="2"
+                                                                >
+                                                                    <path
+                                                                        d="M22 11.08V12a10 10 0 1 1-5.93-9.14"
+                                                                />
+                                                                <polyline
+                                                                    points="22 4 12 14.01 9 11.01"
+                                                                />
+                                                                </svg>
+                                                                Acceso Autorizado
+                                                            </h3>
+                                                            <button
+                                                                type="button"
+                                                                class="btn-ghost"
+                                                                id="logoutBtn"
+                                                            >
+                                                                Cerrar sesión
+                                                            </button>
+                                                        </div>
+                                                        <div
+                                                            class="iframe-container"
+                                                        >
+                                                            <iframe
+                                                                id="lookerIframe"
+                                                                src=""
+                                                                title="Dashboard Financiero - Looker Studio"
+                                                                allow="fullscreen"
+                                                                sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                                                            ></iframe>
+                                                        </div>
+                                                    </div>
+                                            `;
+                                        }
+                                    }
+                                }
+                            }
+                        );
+                    </script>
+
+                    <script src="gallery.js"></script>
+<script>initGallery();</script>
+<script src="app.js"></script>
+                    <script>
+                        if ("serviceWorker" in navigator) {
+                            navigator.serviceWorker.register("sw.js").catch(console.error);
+                        }
+                    </script>
+                </body>
+            </html>
