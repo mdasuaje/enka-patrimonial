@@ -19,3 +19,14 @@ verify:
 status:
 	@git status -s 2>/dev/null || echo "[!] Warning: Git status omitido por permisos del sistema"
 	@engram stats
+
+.PHONY: audit-vault clean-vault
+
+audit-vault:
+	@echo "🧠 [ENKA-RAG] Inicializando verificación local FTS5..."
+	@python3 $(HOME)/workspaces/enka-patrimonial/scripts/enka_auditor_engine.py
+	@echo "✅ [Verificación Exitosa] Ecosistema Bi-Dominio segregado en /tmp."
+
+clean-vault:
+	@echo "🧹 Destruyendo bóveda efímera para preservar regla Zero-Copy..."
+	rm -f /tmp/enka_patrimonial_vault.db
