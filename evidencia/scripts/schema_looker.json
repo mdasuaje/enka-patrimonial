@@ -1,0 +1,75 @@
+{
+  "schema": {
+    "fields": [
+      {
+        "name": "timestamp",
+        "type": "TYPE_DATETIME",
+        "semantics": "DATETIME",
+        "description": "Fecha y hora de registro del aporte (ISO 8601)"
+      },
+      {
+        "name": "apartamento",
+        "type": "TYPE_STRING",
+        "semantics": "DIMENSION",
+        "description": "Identificador de apartamento (PB, 1-18)"
+      },
+      {
+        "name": "nombre_residente",
+        "type": "TYPE_STRING",
+        "semantics": "DIMENSION",
+        "description": "Nombre del residente o pagador"
+      },
+      {
+        "name": "correo_propietario",
+        "type": "TYPE_STRING",
+        "semantics": "DIMENSION",
+        "description": "Email del propietario (clave RLS)"
+      },
+      {
+        "name": "concepto",
+        "type": "TYPE_STRING",
+        "semantics": "DIMENSION",
+        "description": "Tipo de aporte: APORTE_SEPT, DEUDA_ANTERIOR, RESERVA, OTRO"
+      },
+      {
+        "name": "metodo_pago",
+        "type": "TYPE_STRING",
+        "semantics": "DIMENSION",
+        "description": "Método: PAGO_MOVIL, TRANSFERENCIA, EFECTIVO, OTRO"
+      },
+      {
+        "name": "monto_usd",
+        "type": "TYPE_NUMBER",
+        "semantics": "METRIC_CURRENCY_USD",
+        "description": "Monto en USD (2 decimales)"
+      },
+      {
+        "name": "ref_bancaria",
+        "type": "TYPE_STRING",
+        "semantics": "DIMENSION",
+        "description": "Últimos 6 dígitos de referencia BNC"
+      },
+      {
+        "name": "estado",
+        "type": "TYPE_STRING",
+        "semantics": "DIMENSION",
+        "description": "Estado: PENDIENTE, VERIFICADO, RECHAZADO"
+      }
+    ],
+    "configParams": [
+      {
+        "name": "correo_propietario",
+        "displayName": "Correo Propietario (RLS)",
+        "type": "TEXTINPUT",
+        "helpText": "Dejar vacío para vista admin (sin filtro RLS). Requerido para vista vecino."
+      }
+    ]
+  },
+  "metadata": {
+    "project": "enka-patrimonial",
+    "version": "2026.09",
+    "source": "Google Apps Script Web App (Community Connector)",
+    "rls_field": "correo_propietario",
+    "admin_emails_config": "ADMIN_EMAILS (Script Properties)"
+  }
+}

@@ -200,3 +200,15 @@ rag_validation_*.json
 # !scripts/**/*
 # !rag_ingest_cloud_function/**/*
 # ============================================================
+# --- Multimedia y Assets (Zero-Copy: Bóveda Google Drive 1oq-3k-wP2NEOUZrRoPTJXtxlBwbWc0OY) ---
+evidencia/img/
+public/images/
+assets/media/
+assets/
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+*.mp4
+*.mov

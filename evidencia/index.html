@@ -1,441 +1,1151 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es" class="dark">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dossier ENKA Live - Portal de Inspección Patrimonial</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .filter-btn.active {
-            background-color: #0284c7;
-            color: white;
-            border-color: #38bdf8;
-        }
-        .progress-bar {
-            transition: width 0.5s ease-out;
-        }
-    </style>
-</head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen">
-    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 backdrop-blur-md bg-opacity-90">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-            <div>
-                <span class="text-xs font-bold uppercase tracking-widest text-sky-400 bg-sky-950 px-2.5 py-1 rounded-full border border-sky-800">
-                    Bien de Interés Cultural · G.O. 39.272
-                </span>
-                <h1 class="text-xl md:text-2xl font-bold text-white mt-1">Expediente Técnico Digital: Edificio ENKA</h1>
-                <p class="text-xs text-sky-400 mt-1 font-medium">Sep 2026 — Fase II En Progreso / Fase III Gestión Institucional</p>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="EDIFICIO ENKA: Bien de Interés Cultural según G.O. N° 39.272 (Providencia IPC N° 019/09). Categoría de 'Lo Construido' (Registro N° 734). Avenida Fermín Toro, San Bernardino, Caracas, 1011. Gestión del inmueble tras el sismo del 24 de Jun 2026. Ante riesgos estructurales, la comunidad ejecuta reparaciones por autogestión (Art. 762 del Código Civil). En búsqueda de apoyo institucional de la Alcaldía de Caracas para restaurar fachadas y resguardar su valor patrimonial."
+        />
+        <meta
+            property="og:title"
+            content="Dossier ENKA Live - Portal de Inspección Patrimonial"
+        />
+        <meta
+            property="og:description"
+            content="EDIFICIO ENKA: Bien de Interés Cultural según G.O. N° 39.272 (Providencia IPC N° 019/09). Categoría de 'Lo Construido' (Registro N° 734). Avenida Fermín Toro, San Bernardino, Caracas, 1011. Gestión del inmueble tras el sismo del 24 de Jun 2026. Ante riesgos estructurales, la comunidad ejecuta reparaciones por autogestión (Art. 762 del Código Civil). En búsqueda de apoyo institucional de la Alcaldía de Caracas para restaurar fachadas y resguardar su valor patrimonial."
+        />
+        <meta property="og:type" content="website" />
+        <title>Dossier ENKA Live - Portal de Inspección Patrimonial</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+            .filter-btn.active {
+                background-color: #0284c7;
+                color: white;
+                border-color: #38bdf8;
+            }
+            .progress-bar {
+                transition: width 0.5s ease-out;
+            }
+        </style>
+    </head>
+    <body
+        class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen"
+    >
+        <header
+            class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 backdrop-blur-md bg-opacity-90"
+        >
+            <div
+                class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-3"
+            >
+                <div>
+                    <div class="flex flex-wrap items-center gap-1.5 mb-1.5">
+                        <span
+                            class="text-xs font-bold uppercase tracking-widest text-sky-400 bg-sky-950 px-2.5 py-0.5 rounded-full border border-sky-800"
+                        >
+                            BIC G.O. 39.272 · Providencia IPC 019/09 (Reg. 734)
+                        </span>
+                        <span
+                            class="text-xs font-bold uppercase tracking-widest text-amber-400 bg-amber-950 px-2.5 py-0.5 rounded-full border border-amber-800"
+                        >
+                            Post-Sismo 24-Jun-2026
+                        </span>
+                        <span
+                            class="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950 px-2.5 py-0.5 rounded-full border border-emerald-800"
+                        >
+                            Autogestión Art. 762 CC · Zero-Copy SSoT
+                        </span>
+                    </div>
+                    <h1 class="text-xl md:text-2xl font-bold text-white mt-1">
+                        Expediente Técnico Digital: Edificio ENKA
+                    </h1>
+                    <p class="text-xs text-sky-400 mt-1 font-medium">
+                        Sep 2026 — Fase II En Progreso / Fase III Gestión
+                        Institucional
+                    </p>
+                </div>
+                <div class="text-xs text-slate-400 font-mono text-right">
+                    Alcaldía de Caracas / IPC / Co-Custodia Vecinal<br />
+                    Av. Fermín Toro ∩ Av. Rafael Seijas, San Bernardino
+                </div>
             </div>
-            <div class="text-xs text-slate-400 font-mono text-right">
-                Alcaldía de Caracas / IPC / Co-Custodia Vecinal<br>
-                Av. Fermín Toro ∩ Av. Rafael Seijas, San Bernardino
-            </div>
-        </div>
-    </header>
+        </header>
 
-    <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
-        <!-- Estado de Avance: Fases I-III -->
-        <section class="bg-slate-900 rounded-2xl p-6 border border-slate-800 shadow-xl space-y-6">
-            <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Estatus de Avance y Proyección de Obras (Anexo Técnico Sep 2026)</h2>
-                <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 font-mono">v2026.09.07</span>
-            </header>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <!-- Fase I -->
-                <article class="bg-slate-950 p-4 rounded-xl border border-emerald-900/50 relative overflow-hidden">
-                    <div class="absolute top-2 right-2">
-                        <span class="text-xs font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">✓ COMPLETADA</span>
-                    </div>
-                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-1">FASE I: Conservación Técnica Azotea</h3>
-                    <p class="text-xs text-slate-400 mb-3">Agosto 2026 — Autogestión Vecinal ($1,026 USD)</p>
-                    <div class="w-full bg-slate-800 rounded-full h-2.5 mb-2">
-                        <div class="progress-bar bg-emerald-500 h-2.5 rounded-full" style="width: 100%"></div>
-                    </div>
-                    <ul class="text-xs text-slate-300 space-y-1 font-mono">
-                        <li>• Muro parapetado 13 m lineales × 1.42 m alto</li>
-                        <li>• 4 columnas de amarre (0.20 m ancho)</li>
-                        <li>• Mampostería ligera arcilla + media caña</li>
-                        <li>• Impermeabilización manto asfáltico</li>
-                    </ul>
-                </article>
-
-                <!-- Fase II -->
-                <article class="bg-slate-950 p-4 rounded-xl border border-amber-900/50 relative overflow-hidden">
-                    <div class="absolute top-2 right-2">
-                        <span class="text-xs font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">⟳ EN PROGRESO</span>
-                    </div>
-                    <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">FASE II: Columnas y Áreas Críticas</h3>
-                    <p class="text-xs text-slate-400 mb-3">Ejecución Técnica — Saneamiento Estructural</p>
-                    <div class="w-full bg-slate-800 rounded-full h-2.5 mb-2">
-                        <div class="progress-bar bg-amber-500 h-2.5 rounded-full" style="width: 35%"></div>
-                    </div>
-                    <ul class="text-xs text-slate-300 space-y-1 font-mono">
-                        <li>• Saneamiento columnas carga (concreto carbonatado)</li>
-                        <li>• Anticorrosivo cabillas expuestas + SikaGrout</li>
-                        <li>• Remoción frisos sueltos pasillos P1</li>
-                        <li>• Desalojo escombros losa superior</li>
-                    </ul>
-                </article>
-
-                <!-- Fase III -->
-                <article class="bg-slate-950 p-4 rounded-xl border border-sky-900/50 relative overflow-hidden">
-                    <div class="absolute top-2 right-2">
-                        <span class="text-xs font-bold px-2 py-0.5 rounded bg-sky-500/20 text-sky-400 border border-sky-500/30">⏳ GESTIÓN INST.</span>
-                    </div>
-                    <h3 class="text-xs font-bold text-sky-400 uppercase tracking-wider mb-1">FASE III: Restauración Fachadas</h3>
-                    <p class="text-xs text-slate-400 mb-3">Pendiente apoyo Alcaldía / IPC / Co-Custodia</p>
-                    <div class="w-full bg-slate-800 rounded-full h-2.5 mb-2">
-                        <div class="progress-bar bg-sky-500 h-2.5 rounded-full" style="width: 10%"></div>
-                    </div>
-                    <ul class="text-xs text-slate-300 space-y-1 font-mono">
-                        <li>• Remoción frisos exteriores deteriorados</li>
-                        <li>• Av. Fermín Toro y Av. Rafael Seijas</li>
-                        <li>• Conservación herrería Art Decó 70 años</li>
-                        <li>• Bajo directrices IPC (G.O. 39.272)</li>
-                    </ul>
-                </article>
-            </div>
-        </section>
-
-        <!-- Documentos Oficiales Septiembre 2026 -->
-        <section class="bg-slate-900 rounded-2xl p-6 border border-slate-800 space-y-4">
-            <h2 class="text-lg font-bold text-sky-400 border-b border-slate-800 pb-2 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-sky-500"></span>
-                Documentos Oficiales Septiembre 2026
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <article class="bg-slate-950 p-4 rounded-xl border border-slate-700 hover:border-sky-500/50 transition-colors">
-                    <div class="flex items-center gap-2 mb-2">
-                        <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                        <span class="text-xs font-semibold text-red-400">PDF Oficial</span>
-                    </div>
-                    <h3 class="font-semibold text-white mb-1">Solicitud Apoyo ENKA v2</h3>
-                    <p class="text-xs text-slate-400 mb-2">04 Sep 2026 → A/J Carmen Meléndez (Alcaldesa Caracas)</p>
-                    <ul class="text-xs text-slate-300 space-y-1">
-                        <li>• Invocación co-custodia patrimonio público (Art. 759 CC)</li>
-                        <li>• Culminación Fase I (muro azotea 13 m autogestión)</li>
-                        <li>• Solicitud apoyo técnico/logístico/financiero Fase III</li>
-                    </ul>
-                    <a href="https://drive.google.com/file/d/1GPRxyz1k4tpY83RbJj7peFq7gdPHge3F/view?usp=sharing" target="_blank" class="inline-flex items-center gap-1 text-xs text-sky-400 hover:text-sky-300 mt-2 font-medium">
-                        Abrir en Drive →
-                    </a>
-                </article>
-
-                <article class="bg-slate-950 p-4 rounded-xl border border-slate-700 hover:border-sky-500/50 transition-colors">
-                    <div class="flex items-center gap-2 mb-2">
-                        <svg class="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                        <span class="text-xs font-semibold text-amber-400">PDF Oficial</span>
-                    </div>
-                    <h3 class="font-semibold text-white mb-1">Remisión Reglamento ENKA</h3>
-                    <p class="text-xs text-slate-400 mb-2">04 Sep 2026 → Dir. Control Urbano / Justicia de Paz</p>
-                    <ul class="text-xs text-slate-300 space-y-1">
-                        <li>• Reglamento Interno aprobado Asamblea 23 Ago 2026</li>
-                        <li>• Bases coercitivas financiamiento Comunidad Bienes</li>
-                        <li>• Restricciones seguridad: azotea restringida, no mecánica motos áreas gas</li>
-                    </ul>
-                    <a href="https://drive.google.com/file/d/1GPRxyz1k4tpY83RbJj7peFq7gdPHge3F/view?usp=sharing" target="_blank" class="inline-flex items-center gap-1 text-xs text-sky-400 hover:text-sky-300 mt-2 font-medium">
-                        Abrir en Drive →
-                    </a>
-                </article>
-
-                <article class="bg-slate-950 p-4 rounded-xl border border-slate-700 hover:border-sky-500/50 transition-colors md:col-span-2">
-                    <div class="flex items-center gap-2 mb-2">
-                        <svg class="w-5 h-5 text-emerald-500" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                        <span class="text-xs font-semibold text-emerald-400">Google Docs</span>
-                    </div>
-                    <h3 class="font-semibold text-white mb-1">Anexo Técnico: Matriz Patologías y Autogestión + Esquema Recaudación</h3>
-                    <p class="text-xs text-slate-400 mb-2">Base para Dossier Institucional + Formulario Google Sheets/Apps Script</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-300">
-                        <div>
-                            <strong class="text-sky-400">Matriz Patologías:</strong> Fases I/II/III con especificaciones técnicas detalladas
+        <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
+            <!-- Estado de Avance: Fases I-III -->
+            <section
+                class="bg-slate-900 rounded-2xl p-6 border border-slate-800 shadow-xl space-y-6"
+            >
+                <header
+                    class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+                >
+                    <h2
+                        class="text-sm font-semibold uppercase tracking-wider text-slate-400"
+                    >
+                        Estatus de Avance y Proyección de Obras (Anexo Técnico
+                        Sep 2026)
+                    </h2>
+                    <span
+                        class="text-xs px-2.5 py-1 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 font-mono"
+                        >v2026.09.07</span
+                    >
+                </header>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Fase I -->
+                    <article
+                        class="bg-slate-950 p-4 rounded-xl border border-emerald-900/50 relative overflow-hidden"
+                    >
+                        <div class="absolute top-2 right-2">
+                            <span
+                                class="text-xs font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                                >✓ COMPLETADA</span
+                            >
                         </div>
-                        <div>
-                            <strong class="text-sky-400">Esquema Recaudación:</strong> Apartamento PB-18, Nombre, Concepto, Método, Monto USD, Ref BNC (6 díg), Comprobante
+                        <h3
+                            class="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-1"
+                        >
+                            FASE I: Conservación Técnica Azotea
+                        </h3>
+                        <p class="text-xs text-slate-400 mb-3">
+                            Agosto 2026 — Autogestión Vecinal ($1,026 USD)
+                        </p>
+                        <div
+                            class="w-full bg-slate-800 rounded-full h-2.5 mb-2"
+                        >
+                            <div
+                                class="progress-bar bg-emerald-500 h-2.5 rounded-full"
+                                style="width: 100%"
+                            ></div>
                         </div>
-                    </div>
-                    <a href="https://drive.google.com/drive/folders/1GPRxyz1k4tpY83RbJj7peFq7gdPHge3F" target="_blank" class="inline-flex items-center gap-1 text-xs text-sky-400 hover:text-sky-300 mt-2 font-medium">
-                        Ver carpeta Drive →
-                    </a>
-                </article>
-            </div>
-        </section>
+                        <ul class="text-xs text-slate-300 space-y-1 font-mono">
+                            <li>
+                                • Muro parapetado 13 m lineales × 1.42 m alto
+                            </li>
+                            <li>• 4 columnas de amarre (0.20 m ancho)</li>
+                            <li>• Mampostería ligera arcilla + media caña</li>
+                            <li>• Impermeabilización manto asfáltico</li>
+                        </ul>
+                    </article>
 
-        <!-- Módulo Financiero (Strict-RLS) -->
-        <section class="bg-slate-900 rounded-2xl p-6 border border-slate-800 space-y-4">
-            <h2 class="text-lg font-bold text-emerald-400 border-b border-slate-800 pb-2 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                Transparencia Financiera Vecinal (Strict-RLS)
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <!-- Scorecards -->
-                <div class="md:col-span-2 space-y-3">
-                    <div class="bg-slate-950 p-4 rounded-xl border border-emerald-900/50 grid grid-cols-3 gap-3">
-                        <div class="text-center">
-                            <p class="text-xs text-slate-400 uppercase tracking-wider">Deuda Histórica</p>
-                            <p class="text-2xl font-bold text-red-400 font-mono" id="scorecard-deuda">—</p>
+                    <!-- Fase II -->
+                    <article
+                        class="bg-slate-950 p-4 rounded-xl border border-amber-900/50 relative overflow-hidden"
+                    >
+                        <div class="absolute top-2 right-2">
+                            <span
+                                class="text-xs font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30"
+                                >⟳ EN PROGRESO</span
+                            >
                         </div>
-                        <div class="text-center">
-                            <p class="text-xs text-slate-400 uppercase tracking-wider">Total Pagado</p>
-                            <p class="text-2xl font-bold text-sky-400 font-mono" id="scorecard-pagado">—</p>
+                        <h3
+                            class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1"
+                        >
+                            FASE II: Columnas y Áreas Críticas
+                        </h3>
+                        <p class="text-xs text-slate-400 mb-3">
+                            Ejecución Técnica — Saneamiento Estructural
+                        </p>
+                        <div
+                            class="w-full bg-slate-800 rounded-full h-2.5 mb-2"
+                        >
+                            <div
+                                class="progress-bar bg-amber-500 h-2.5 rounded-full"
+                                style="width: 35%"
+                            ></div>
                         </div>
-                        <div class="text-center">
-                            <p class="text-xs text-slate-400 uppercase tracking-wider">Saldo Pendiente</p>
-                            <p class="text-2xl font-bold text-amber-400 font-mono" id="scorecard-saldo">—</p>
+                        <ul class="text-xs text-slate-300 space-y-1 font-mono">
+                            <li>
+                                • Saneamiento columnas carga (concreto
+                                carbonatado)
+                            </li>
+                            <li>
+                                • Anticorrosivo cabillas expuestas + SikaGrout
+                            </li>
+                            <li>• Remoción frisos sueltos pasillos P1</li>
+                            <li>• Desalojo escombros losa superior</li>
+                        </ul>
+                    </article>
+
+                    <!-- Fase III -->
+                    <article
+                        class="bg-slate-950 p-4 rounded-xl border border-sky-900/50 relative overflow-hidden"
+                    >
+                        <div class="absolute top-2 right-2">
+                            <span
+                                class="text-xs font-bold px-2 py-0.5 rounded bg-sky-500/20 text-sky-400 border border-sky-500/30"
+                                >⏳ GESTIÓN INST.</span
+                            >
                         </div>
-                    </div>
-                    <!-- Looker Studio Embed Placeholder -->
-                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-700">
-                        <p class="text-xs text-slate-400 mb-2">Dashboard Looker Studio (% áreas recuperadas vs críticas — Strict-RLS por Correo_Propietario)</p>
-                        <div class="aspect-video bg-slate-800 rounded-lg border border-slate-700 flex items-center justify-center relative overflow-hidden">
-                            <iframe 
-                                src="https://lookerstudio.google.com/embed/placeholder-enka-dashboard" 
-                                class="w-full h-full" 
-                                frameborder="0" 
-                                allowfullscreen
-                                style="display:none;">
-                            </iframe>
-                            <div id="looker-placeholder" class="text-center text-slate-500">
-                                <svg class="w-12 h-12 mx-auto mb-2 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                                <p>Dashboard Looker Studio — Configurar URL de embed en producción</p>
-                                <p class="text-xs mt-1">Filtro RLS: <code class="font-mono bg-slate-800 px-1 rounded">Correo_Propietario</code></p>
+                        <h3
+                            class="text-xs font-bold text-sky-400 uppercase tracking-wider mb-1"
+                        >
+                            FASE III: Restauración Fachadas
+                        </h3>
+                        <p class="text-xs text-slate-400 mb-3">
+                            Pendiente apoyo Alcaldía / IPC / Co-Custodia
+                        </p>
+                        <div
+                            class="w-full bg-slate-800 rounded-full h-2.5 mb-2"
+                        >
+                            <div
+                                class="progress-bar bg-sky-500 h-2.5 rounded-full"
+                                style="width: 10%"
+                            ></div>
+                        </div>
+                        <ul class="text-xs text-slate-300 space-y-1 font-mono">
+                            <li>• Remoción frisos exteriores deteriorados</li>
+                            <li>• Av. Fermín Toro y Av. Rafael Seijas</li>
+                            <li>• Conservación herrería Art Decó 70 años</li>
+                            <li>• Bajo directrices IPC (G.O. 39.272)</li>
+                        </ul>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Documentos Oficiales Septiembre 2026 -->
+            <section
+                class="bg-slate-900 rounded-2xl p-6 border border-slate-800 space-y-4"
+            >
+                <h2
+                    class="text-lg font-bold text-sky-400 border-b border-slate-800 pb-2 flex items-center gap-2"
+                >
+                    <span class="w-2 h-2 rounded-full bg-sky-500"></span>
+                    Documentos Oficiales Septiembre 2026
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <article
+                        class="bg-slate-950 p-4 rounded-xl border border-slate-700 hover:border-sky-500/50 transition-colors"
+                    >
+                        <div class="flex items-center gap-2 mb-2">
+                            <svg
+                                class="w-5 h-5 text-red-500"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                                ></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            <span class="text-xs font-semibold text-red-400"
+                                >PDF Oficial</span
+                            >
+                        </div>
+                        <h3 class="font-semibold text-white mb-1">
+                            Solicitud Apoyo ENKA v2
+                        </h3>
+                        <p class="text-xs text-slate-400 mb-2">
+                            04 Sep 2026 → A/J Carmen Meléndez (Alcaldesa
+                            Caracas)
+                        </p>
+                        <ul class="text-xs text-slate-300 space-y-1">
+                            <li>
+                                • Invocación co-custodia patrimonio público
+                                (Art. 759 CC)
+                            </li>
+                            <li>
+                                • Culminación Fase I (muro azotea 13 m
+                                autogestión)
+                            </li>
+                            <li>
+                                • Solicitud apoyo técnico/logístico/financiero
+                                Fase III
+                            </li>
+                        </ul>
+                        <a
+                            href="https://drive.google.com/file/d/1GPRxyz1k4tpY83RbJj7peFq7gdPHge3F/view?usp=sharing"
+                            target="_blank"
+                            class="inline-flex items-center gap-1 text-xs text-sky-400 hover:text-sky-300 mt-2 font-medium"
+                        >
+                            Abrir en Drive →
+                        </a>
+                    </article>
+
+                    <article
+                        class="bg-slate-950 p-4 rounded-xl border border-slate-700 hover:border-sky-500/50 transition-colors"
+                    >
+                        <div class="flex items-center gap-2 mb-2">
+                            <svg
+                                class="w-5 h-5 text-amber-500"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                                ></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            <span class="text-xs font-semibold text-amber-400"
+                                >PDF Oficial</span
+                            >
+                        </div>
+                        <h3 class="font-semibold text-white mb-1">
+                            Remisión Reglamento ENKA
+                        </h3>
+                        <p class="text-xs text-slate-400 mb-2">
+                            04 Sep 2026 → Dir. Control Urbano / Justicia de Paz
+                        </p>
+                        <ul class="text-xs text-slate-300 space-y-1">
+                            <li>
+                                • Reglamento Interno aprobado Asamblea 23 Ago
+                                2026
+                            </li>
+                            <li>
+                                • Bases coercitivas financiamiento Comunidad
+                                Bienes
+                            </li>
+                            <li>
+                                • Restricciones seguridad: azotea restringida,
+                                no mecánica motos áreas gas
+                            </li>
+                        </ul>
+                        <a
+                            href="https://drive.google.com/file/d/1GPRxyz1k4tpY83RbJj7peFq7gdPHge3F/view?usp=sharing"
+                            target="_blank"
+                            class="inline-flex items-center gap-1 text-xs text-sky-400 hover:text-sky-300 mt-2 font-medium"
+                        >
+                            Abrir en Drive →
+                        </a>
+                    </article>
+
+                    <article
+                        class="bg-slate-950 p-4 rounded-xl border border-slate-700 hover:border-sky-500/50 transition-colors md:col-span-2"
+                    >
+                        <div class="flex items-center gap-2 mb-2">
+                            <svg
+                                class="w-5 h-5 text-emerald-500"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                                ></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            <span class="text-xs font-semibold text-emerald-400"
+                                >Google Docs</span
+                            >
+                        </div>
+                        <h3 class="font-semibold text-white mb-1">
+                            Anexo Técnico: Matriz Patologías y Autogestión +
+                            Esquema Recaudación
+                        </h3>
+                        <p class="text-xs text-slate-400 mb-2">
+                            Base para Dossier Institucional + Formulario Google
+                            Sheets/Apps Script
+                        </p>
+                        <div
+                            class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-300"
+                        >
+                            <div>
+                                <strong class="text-sky-400"
+                                    >Matriz Patologías:</strong
+                                >
+                                Fases I/II/III con especificaciones técnicas
+                                detalladas
+                            </div>
+                            <div>
+                                <strong class="text-sky-400"
+                                    >Esquema Recaudación:</strong
+                                >
+                                Apartamento PB-18, Nombre, Concepto, Método,
+                                Monto USD, Ref BNC (6 díg), Comprobante
+                            </div>
+                        </div>
+                        <a
+                            href="https://drive.google.com/drive/folders/1oq-3k-wP2NEOUZrRoPTJXtxlBwbWc0OY?usp=drive_link"
+                            target="_blank"
+                            class="inline-flex items-center gap-1 text-xs text-sky-400 hover:text-sky-300 mt-2 font-medium"
+                        >
+                            Ver carpeta Drive →
+                        </a>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Módulo Financiero (Strict-RLS) -->
+            <section
+                class="bg-slate-900 rounded-2xl p-6 border border-slate-800 space-y-4"
+            >
+                <h2
+                    class="text-lg font-bold text-emerald-400 border-b border-slate-800 pb-2 flex items-center gap-2"
+                >
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    Transparencia Financiera Vecinal (Strict-RLS)
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Scorecards -->
+                    <div class="md:col-span-2 space-y-3">
+                        <div
+                            class="bg-slate-950 p-4 rounded-xl border border-emerald-900/50 grid grid-cols-3 gap-3"
+                        >
+                            <div class="text-center">
+                                <p
+                                    class="text-xs text-slate-400 uppercase tracking-wider"
+                                >
+                                    Deuda Histórica
+                                </p>
+                                <p
+                                    class="text-2xl font-bold text-red-400 font-mono"
+                                    id="scorecard-deuda"
+                                >
+                                    —
+                                </p>
+                            </div>
+                            <div class="text-center">
+                                <p
+                                    class="text-xs text-slate-400 uppercase tracking-wider"
+                                >
+                                    Total Pagado
+                                </p>
+                                <p
+                                    class="text-2xl font-bold text-sky-400 font-mono"
+                                    id="scorecard-pagado"
+                                >
+                                    —
+                                </p>
+                            </div>
+                            <div class="text-center">
+                                <p
+                                    class="text-xs text-slate-400 uppercase tracking-wider"
+                                >
+                                    Saldo Pendiente
+                                </p>
+                                <p
+                                    class="text-2xl font-bold text-amber-400 font-mono"
+                                    id="scorecard-saldo"
+                                >
+                                    —
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Looker Studio Embed Placeholder -->
+                        <div
+                            class="bg-slate-950 p-4 rounded-xl border border-slate-700"
+                        >
+                            <p class="text-xs text-slate-400 mb-2">
+                                Dashboard Looker Studio (% áreas recuperadas vs
+                                críticas — Strict-RLS por Correo_Propietario)
+                            </p>
+                            <div
+                                class="aspect-video bg-slate-800 rounded-lg border border-slate-700 flex items-center justify-center relative overflow-hidden"
+                            >
+                                <iframe
+                                    src="https://lookerstudio.google.com/embed/placeholder-enka-dashboard"
+                                    class="w-full h-full"
+                                    frameborder="0"
+                                    allowfullscreen
+                                    style="display: none"
+                                >
+                                </iframe>
+                                <div
+                                    id="looker-placeholder"
+                                    class="text-center text-slate-500"
+                                >
+                                    <svg
+                                        class="w-12 h-12 mx-auto mb-2 text-slate-700"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="1.5"
+                                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                                        ></path>
+                                    </svg>
+                                    <p>
+                                        Dashboard Looker Studio — Configurar URL
+                                        de embed en producción
+                                    </p>
+                                    <p class="text-xs mt-1">
+                                        Filtro RLS:
+                                        <code
+                                            class="font-mono bg-slate-800 px-1 rounded"
+                                            >Correo_Propietario</code
+                                        >
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Formulario Recaudación -->
+                    <div
+                        class="bg-slate-950 p-4 rounded-xl border border-slate-700"
+                    >
+                        <h3 class="text-sm font-bold text-emerald-400 mb-3">
+                            Aporte Septiembre 2026
+                        </h3>
+                        <p class="text-xs text-slate-400 mb-3">
+                            Google Forms + Apps Script → Sheets Centralizada
+                        </p>
+                        <ul
+                            class="text-xs text-slate-300 space-y-1 mb-4 font-mono"
+                        >
+                            <li>• Apartamento (desplegable PB-18)</li>
+                            <li>• Nombre Residente / Pagador</li>
+                            <li>• Concepto (Aporte Sep, Deuda, Reserva)</li>
+                            <li>
+                                • Método (Pago Móvil, Transferencia, Efectivo)
+                            </li>
+                            <li>• Monto USD</li>
+                            <li>• Ref Bancaria BNC (últimos 6 díg)</li>
+                            <li>• Comprobante (JPG/PNG/PDF)</li>
+                        </ul>
+                        <a
+                            href="https://forms.gle/placeholder-enka-recaudacion"
+                            target="_blank"
+                            class="block w-full text-center py-2 bg-emerald-950 text-emerald-400 border border-emerald-800 rounded-lg text-xs font-semibold hover:bg-emerald-900 transition-colors"
+                        >
+                            Acceder Formulario →
+                        </a>
+                    </div>
                 </div>
+            </section>
 
-                <!-- Formulario Recaudación -->
-                <div class="bg-slate-950 p-4 rounded-xl border border-slate-700">
-                    <h3 class="text-sm font-bold text-emerald-400 mb-3">Aporte Septiembre 2026</h3>
-                    <p class="text-xs text-slate-400 mb-3">Google Forms + Apps Script → Sheets Centralizada</p>
-                    <ul class="text-xs text-slate-300 space-y-1 mb-4 font-mono">
-                        <li>• Apartamento (desplegable PB-18)</li>
-                        <li>• Nombre Residente / Pagador</li>
-                        <li>• Concepto (Aporte Sep, Deuda, Reserva)</li>
-                        <li>• Método (Pago Móvil, Transferencia, Efectivo)</li>
-                        <li>• Monto USD</li>
-                        <li>• Ref Bancaria BNC (últimos 6 díg)</li>
-                        <li>• Comprobante (JPG/PNG/PDF)</li>
-                    </ul>
-                    <a href="https://forms.gle/placeholder-enka-recaudacion" target="_blank" class="block w-full text-center py-2 bg-emerald-950 text-emerald-400 border border-emerald-800 rounded-lg text-xs font-semibold hover:bg-emerald-900 transition-colors">
-                        Acceder Formulario →
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Arquitectura ENKA Live -->
-        <section class="bg-slate-900 rounded-2xl p-6 border border-slate-800 space-y-4">
-            <h2 class="text-lg font-bold text-purple-400 border-b border-slate-800 pb-2 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-purple-500"></span>
-                Arquitectura Digital "ENKA Live"
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
-                <article class="bg-slate-950 p-4 rounded-xl border border-purple-900/50 text-center">
-                    <div class="w-12 h-12 mx-auto mb-3 bg-purple-950 rounded-xl flex items-center justify-center">
-                        <svg class="w-6 h-6 text-purple-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
-                    </div>
-                    <h3 class="font-semibold text-white mb-1">Presentación</h3>
-                    <p class="text-xs text-slate-400">Google Sites<br>Micrositio Expediente Técnico</p>
-                </article>
-                <article class="bg-slate-950 p-4 rounded-xl border border-purple-900/50 text-center">
-                    <div class="w-12 h-12 mx-auto mb-3 bg-purple-950 rounded-xl flex items-center justify-center">
-                        <svg class="w-6 h-6 text-purple-400" fill="currentColor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><path d="M8 21h8M12 17v4"></path></svg>
-                    </div>
-                    <h3 class="font-semibold text-white mb-1">Repositorio</h3>
-                    <p class="text-xs text-slate-400">Google Photos + Drive<br>Álbumes y carpetas públicas</p>
-                </article>
-                <article class="bg-slate-950 p-4 rounded-xl border border-purple-900/50 text-center">
-                    <div class="w-12 h-12 mx-auto mb-3 bg-purple-950 rounded-xl flex items-center justify-center">
-                        <svg class="w-6 h-6 text-purple-400" fill="currentColor" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
-                    </div>
-                    <h3 class="font-semibold text-white mb-1">Analítica</h3>
-                    <p class="text-xs text-slate-400">Looker Studio<br>% áreas recuperadas (Strict-RLS)</p>
-                </article>
-                <article class="bg-slate-950 p-4 rounded-xl border border-purple-900/50 text-center">
-                    <div class="w-12 h-12 mx-auto mb-3 bg-purple-950 rounded-xl flex items-center justify-center">
-                        <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                    </div>
-                    <h3 class="font-semibold text-white mb-1">Ingesta</h3>
-                    <p class="text-xs text-slate-400">Google Lens<br>Categorización patologías móvil</p>
-                </article>
-            </div>
-            <p class="text-xs text-slate-500 text-center">Canvas 1280×720 px · Alto contraste #1E1E1E · Mobile-First</p>
-        </section>
-
-        <!-- Control de Filtros por Ejes -->
-        <section class="bg-slate-900 p-4 rounded-xl border border-slate-800">
-            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Filtrar Galería por Eje Probatorio</h2>
-            <div class="flex flex-wrap gap-2">
-                <button onclick="filterGallery('all')" class="filter-btn active text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700">Todos (53)</button>
-                <button onclick="filterGallery('eje-1')" class="filter-btn text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700">Eje I: Contexto</button>
-                <button onclick="filterGallery('eje-2')" class="filter-btn text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700">Eje II: Autogestión</button>
-                <button onclick="filterGallery('eje-3')" class="filter-btn text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700">Eje III: Patologías</button>
-                <button onclick="filterGallery('eje-4')" class="filter-btn text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700">Eje IV: Riesgo Civil</button>
-            </div>
-        </section>
-
-        <!-- Galería Fotográfica -->
-        <section class="space-y-4">
-            <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span>
-                    Atlas Fotográfico de Registro y Patologías (53 fotografías del Edificio ENKA)
+            <!-- Arquitectura ENKA Live -->
+            <section
+                class="bg-slate-900 rounded-2xl p-6 border border-slate-800 space-y-4"
+            >
+                <h2
+                    class="text-lg font-bold text-purple-400 border-b border-slate-800 pb-2 flex items-center gap-2"
+                >
+                    <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                    Arquitectura Digital "ENKA Live"
                 </h2>
-                <span class="text-xs text-slate-400 font-mono">Ejes I-IV · Lightbox modal · Touch-ready</span>
-            </header>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="gallery-grid">
-                <!-- Gallery cards injected by JS below -->
-            </div>
-        </section>
-    </main>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                    <article
+                        class="bg-slate-950 p-4 rounded-xl border border-purple-900/50 text-center"
+                    >
+                        <div
+                            class="w-12 h-12 mx-auto mb-3 bg-purple-950 rounded-xl flex items-center justify-center"
+                        >
+                            <svg
+                                class="w-6 h-6 text-purple-400"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
+                                ></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-white mb-1">
+                            Presentación
+                        </h3>
+                        <p class="text-xs text-slate-400">
+                            Google Sites<br />Micrositio Expediente Técnico
+                        </p>
+                    </article>
+                    <article
+                        class="bg-slate-950 p-4 rounded-xl border border-purple-900/50 text-center"
+                    >
+                        <div
+                            class="w-12 h-12 mx-auto mb-3 bg-purple-950 rounded-xl flex items-center justify-center"
+                        >
+                            <svg
+                                class="w-6 h-6 text-purple-400"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <rect
+                                    x="2"
+                                    y="3"
+                                    width="20"
+                                    height="14"
+                                    rx="2"
+                                    ry="2"
+                                ></rect>
+                                <path d="M8 21h8M12 17v4"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-white mb-1">
+                            Repositorio
+                        </h3>
+                        <p class="text-xs text-slate-400">
+                            Google Photos + Drive<br />Álbumes y carpetas
+                            públicas
+                        </p>
+                    </article>
+                    <article
+                        class="bg-slate-950 p-4 rounded-xl border border-purple-900/50 text-center"
+                    >
+                        <div
+                            class="w-12 h-12 mx-auto mb-3 bg-purple-950 rounded-xl flex items-center justify-center"
+                        >
+                            <svg
+                                class="w-6 h-6 text-purple-400"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="16"></line>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-white mb-1">Analítica</h3>
+                        <p class="text-xs text-slate-400">
+                            Looker Studio<br />% áreas recuperadas (Strict-RLS)
+                        </p>
+                    </article>
+                    <article
+                        class="bg-slate-950 p-4 rounded-xl border border-purple-900/50 text-center"
+                    >
+                        <div
+                            class="w-12 h-12 mx-auto mb-3 bg-purple-950 rounded-xl flex items-center justify-center"
+                        >
+                            <svg
+                                class="w-6 h-6 text-purple-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                ></path>
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                ></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-white mb-1">Ingesta</h3>
+                        <p class="text-xs text-slate-400">
+                            Google Lens<br />Categorización patologías móvil
+                        </p>
+                    </article>
+                </div>
+                <p class="text-xs text-slate-500 text-center">
+                    Canvas 1280×720 px · Alto contraste #1E1E1E · Mobile-First
+                </p>
+            </section>
 
-    <!-- Modal Lightbox -->
-    <div id="lightbox" class="fixed inset-0 bg-black/90 hidden z-50 flex items-center justify-center p-4" onclick="closeLightbox()">
-        <div class="max-w-4xl w-full bg-slate-900 rounded-2xl overflow-hidden border border-slate-800" onclick="event.stopPropagation()">
-            <div class="p-4 flex justify-between items-center border-b border-slate-800">
-                <h3 id="lightbox-title" class="text-sm font-bold text-sky-400"></h3>
-                <button onclick="closeLightbox()" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
-            </div>
-            <div class="p-2 bg-black flex justify-center">
-                <img id="lightbox-img" src="" alt="" class="max-h-[70vh] object-contain">
+            <!-- Control de Filtros por Ejes -->
+            <section
+                class="bg-slate-900 p-4 rounded-xl border border-slate-800"
+            >
+                <h2
+                    class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3"
+                >
+                    Filtrar Galería por Eje Probatorio
+                </h2>
+                <div class="flex flex-wrap gap-2">
+                    <button
+                        onclick="filterGallery('all')"
+                        class="filter-btn active text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700"
+                    >
+                        Todos (53)
+                    </button>
+                    <button
+                        onclick="filterGallery('eje-1')"
+                        class="filter-btn text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700"
+                    >
+                        Eje I: Contexto
+                    </button>
+                    <button
+                        onclick="filterGallery('eje-2')"
+                        class="filter-btn text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700"
+                    >
+                        Eje II: Autogestión
+                    </button>
+                    <button
+                        onclick="filterGallery('eje-3')"
+                        class="filter-btn text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700"
+                    >
+                        Eje III: Patologías
+                    </button>
+                    <button
+                        onclick="filterGallery('eje-4')"
+                        class="filter-btn text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700"
+                    >
+                        Eje IV: Riesgo Civil
+                    </button>
+                </div>
+            </section>
+
+            <!-- Galería Fotográfica -->
+            <section class="space-y-4">
+                <header
+                    class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+                >
+                    <h2
+                        class="text-lg font-bold text-white flex items-center gap-2"
+                    >
+                        <span
+                            class="w-2.5 h-2.5 rounded-full bg-sky-500"
+                        ></span>
+                        Atlas Fotográfico de Registro y Patologías (53
+                        fotografías del Edificio ENKA)
+                    </h2>
+                    <span class="text-xs text-slate-400 font-mono"
+                        >Ejes I-IV · Lightbox modal · Touch-ready</span
+                    >
+                </header>
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
+                    id="gallery-grid"
+                >
+                    <!-- Gallery cards injected by JS below -->
+                </div>
+            </section>
+        </main>
+
+        <!-- Modal Lightbox -->
+        <div
+            id="lightbox"
+            class="fixed inset-0 bg-black/90 hidden z-50 flex items-center justify-center p-4"
+            onclick="closeLightbox()"
+        >
+            <div
+                class="max-w-4xl w-full bg-slate-900 rounded-2xl overflow-hidden border border-slate-800"
+                onclick="event.stopPropagation()"
+            >
+                <div
+                    class="p-4 flex justify-between items-center border-b border-slate-800"
+                >
+                    <h3
+                        id="lightbox-title"
+                        class="text-sm font-bold text-sky-400"
+                    ></h3>
+                    <button
+                        onclick="closeLightbox()"
+                        class="text-slate-400 hover:text-white text-lg font-bold"
+                    >
+                        &times;
+                    </button>
+                </div>
+                <div class="p-2 bg-black flex justify-center">
+                    <img
+                        id="lightbox-img"
+                        src=""
+                        alt=""
+                        class="max-h-[70vh] object-contain"
+                    />
+                </div>
             </div>
         </div>
-    </div>
 
-    <footer class="bg-slate-900 border-t border-slate-800 py-6">
-        <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-slate-500">
-            <div class="flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
-                Comité Técnico Vecinal de Co-Custodia del Edificio ENKA — 2026
+        <footer class="bg-slate-900 border-t border-slate-800 py-6">
+            <div
+                class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-slate-500"
+            >
+                <div class="flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
+                    Comité Técnico Vecinal de Co-Custodia del Edificio ENKA —
+                    2026
+                </div>
+                <div class="flex items-center gap-4">
+                    <a
+                        href="https://github.com/mdasuaje/enka-patrimonial"
+                        target="_blank"
+                        class="hover:text-sky-400 transition-colors"
+                        >GitHub</a
+                    >
+                    <a
+                        href="https://drive.google.com/drive/folders/1oq-3k-wP2NEOUZrRoPTJXtxlBwbWc0OY?usp=drive_link"
+                        target="_blank"
+                        class="hover:text-sky-400 transition-colors"
+                        >Drive</a
+                    >
+                    <a
+                        href="https://lookerstudio.google.com"
+                        target="_blank"
+                        class="hover:text-sky-400 transition-colors"
+                        >Looker Studio</a
+                    >
+                </div>
             </div>
-            <div class="flex items-center gap-4">
-                <a href="https://github.com/mdasuaje/enka-patrimonial" target="_blank" class="hover:text-sky-400 transition-colors">GitHub</a>
-                <a href="https://drive.google.com/drive/folders/1GPRxyz1k4tpY83RbJj7peFq7gdPHge3F" target="_blank" class="hover:text-sky-400 transition-colors">Drive</a>
-                <a href="https://lookerstudio.google.com" target="_blank" class="hover:text-sky-400 transition-colors">Looker Studio</a>
-            </div>
-        </div>
-    </footer>
+        </footer>
 
-    <script>
-        // Gallery data injected at build time
-        const galleryImages = [
-            {"idx":1,"file":"WhatsApp Image 2026-07-25 at 8.41.10 AM.jpeg","eje":1},
-            {"idx":2,"file":"WhatsApp Image 2026-07-25 at 8.42.59 AM.jpeg","eje":2},
-            {"idx":3,"file":"WhatsApp Image 2026-07-25 at 8.44.19 AM.jpeg","eje":3},
-            {"idx":4,"file":"WhatsApp Image 2026-07-27 at 10.40.49 AM.jpeg","eje":4},
-            {"idx":5,"file":"WhatsApp Image 2026-07-27 at 2.08.16 PM.jpeg","eje":1},
-            {"idx":6,"file":"WhatsApp Image 2026-07-27 at 2.08.17 PM (1).jpeg","eje":2},
-            {"idx":7,"file":"WhatsApp Image 2026-07-27 at 2.08.17 PM.jpeg","eje":3},
-            {"idx":8,"file":"WhatsApp Image 2026-07-27 at 2.08.18 PM (1).jpeg","eje":4},
-            {"idx":9,"file":"WhatsApp Image 2026-07-27 at 2.08.18 PM (2).jpeg","eje":1},
-            {"idx":10,"file":"WhatsApp Image 2026-07-27 at 2.08.18 PM (3).jpeg","eje":2},
-            {"idx":11,"file":"WhatsApp Image 2026-07-27 at 2.08.18 PM (4).jpeg","eje":3},
-            {"idx":12,"file":"WhatsApp Image 2026-07-27 at 2.08.18 PM.jpeg","eje":4},
-            {"idx":13,"file":"WhatsApp Image 2026-07-27 at 2.08.19 PM.jpeg","eje":1},
-            {"idx":14,"file":"WhatsApp Image 2026-07-28 at 11.48.52 AM.jpeg","eje":2},
-            {"idx":15,"file":"WhatsApp Image 2026-07-28 at 11.48.59 AM.jpeg","eje":3},
-            {"idx":16,"file":"WhatsApp Image 2026-07-28 at 12.16.36 PM.jpeg","eje":4},
-            {"idx":17,"file":"WhatsApp Image 2026-07-28 at 12.27.08 PM.jpeg","eje":1},
-            {"idx":18,"file":"WhatsApp Image 2026-07-28 at 2.35.44 PM.jpeg","eje":2},
-            {"idx":19,"file":"WhatsApp Image 2026-07-28 at 2.42.47 PM.jpeg","eje":3},
-            {"idx":20,"file":"WhatsApp Image 2026-07-28 at 2.45.32 PM.jpeg","eje":4},
-            {"idx":21,"file":"WhatsApp Image 2026-07-28 at 5.30.19 PM (1).jpeg","eje":1},
-            {"idx":22,"file":"WhatsApp Image 2026-07-28 at 5.30.19 PM (2).jpeg","eje":2},
-            {"idx":23,"file":"WhatsApp Image 2026-07-28 at 5.30.19 PM (3).jpeg","eje":3},
-            {"idx":24,"file":"WhatsApp Image 2026-07-28 at 5.30.19 PM.jpeg","eje":4},
-            {"idx":25,"file":"WhatsApp Image 2026-07-28 at 5.30.20 PM (1).jpeg","eje":1},
-            {"idx":26,"file":"WhatsApp Image 2026-07-28 at 5.30.20 PM (2).jpeg","eje":2},
-            {"idx":27,"file":"WhatsApp Image 2026-07-28 at 5.30.20 PM.jpeg","eje":3},
-            {"idx":28,"file":"WhatsApp Image 2026-07-28 at 5.30.21 PM.jpeg","eje":4},
-            {"idx":29,"file":"WhatsApp Image 2026-07-28 at 7.06.42 PM.jpeg","eje":1},
-            {"idx":30,"file":"WhatsApp Image 2026-07-28 at 7.06.55 PM.jpeg","eje":2},
-            {"idx":31,"file":"WhatsApp Image 2026-07-30 at 11.50.40 AM.jpeg","eje":3},
-            {"idx":32,"file":"WhatsApp Image 2026-07-30 at 5.30.30 PM.jpeg","eje":4},
-            {"idx":33,"file":"WhatsApp Image 2026-07-31 at 5.41.59 PM.jpeg","eje":1},
-            {"idx":34,"file":"WhatsApp Image 2026-07-31 at 5.42.39 PM.jpeg","eje":2},
-            {"idx":35,"file":"WhatsApp Image 2026-07-31 at 8.42.43 AM.jpeg","eje":3},
-            {"idx":36,"file":"WhatsApp Image 2026-07-31 at 9.22.12 AM (1).jpeg","eje":4},
-            {"idx":37,"file":"WhatsApp Image 2026-07-31 at 9.22.12 AM.jpeg","eje":1},
-            {"idx":38,"file":"WhatsApp Image 2026-07-31 at 9.26.31 AM.jpeg","eje":2},
-            {"idx":39,"file":"WhatsApp Image 2026-08-01 at 1.11.30 PM.jpeg","eje":3},
-            {"idx":40,"file":"WhatsApp Image 2026-08-01 at 1.11.31 PM (1).jpeg","eje":4},
-            {"idx":41,"file":"WhatsApp Image 2026-08-01 at 1.11.31 PM (2).jpeg","eje":1},
-            {"idx":42,"file":"WhatsApp Image 2026-08-01 at 1.11.31 PM.jpeg","eje":2},
-            {"idx":43,"file":"WhatsApp Image 2026-08-01 at 1.11.32 PM.jpeg","eje":3},
-            {"idx":44,"file":"WhatsApp Image 2026-08-01 at 1.11.33 PM (1).jpeg","eje":4},
-            {"idx":45,"file":"WhatsApp Image 2026-08-01 at 1.11.33 PM (2).jpeg","eje":1},
-            {"idx":46,"file":"WhatsApp Image 2026-08-01 at 1.11.33 PM.jpeg","eje":2},
-            {"idx":47,"file":"WhatsApp Image 2026-08-01 at 1.11.43 PM.jpeg","eje":3},
-            {"idx":48,"file":"WhatsApp Image 2026-08-03 at 11.16.03 AM.jpeg","eje":4},
-            {"idx":49,"file":"WhatsApp Image 2026-08-03 at 11.16.16 AM.jpeg","eje":1},
-            {"idx":50,"file":"WhatsApp Image 2026-08-03 at 11.20.14 AM.jpeg","eje":2},
-            {"idx":51,"file":"WhatsApp Image 2026-08-03 at 11.21.02 AM.jpeg","eje":3},
-            {"idx":52,"file":"WhatsApp Image 2026-08-03 at 11.21.13 AM.jpeg","eje":4},
-            {"idx":53,"file":"WhatsApp Image 2026-08-03 at 9.14.41 AM.jpeg","eje":1}
-        ];
+        <script>
+            // Gallery data injected at build time
+            const galleryImages = [
+                {
+                    idx: 1,
+                    file: "WhatsApp Image 2026-07-25 at 8.41.10 AM.jpeg",
+                    eje: 1,
+                },
+                {
+                    idx: 2,
+                    file: "WhatsApp Image 2026-07-25 at 8.42.59 AM.jpeg",
+                    eje: 2,
+                },
+                {
+                    idx: 3,
+                    file: "WhatsApp Image 2026-07-25 at 8.44.19 AM.jpeg",
+                    eje: 3,
+                },
+                {
+                    idx: 4,
+                    file: "WhatsApp Image 2026-07-27 at 10.40.49 AM.jpeg",
+                    eje: 4,
+                },
+                {
+                    idx: 5,
+                    file: "WhatsApp Image 2026-07-27 at 2.08.16 PM.jpeg",
+                    eje: 1,
+                },
+                {
+                    idx: 6,
+                    file: "WhatsApp Image 2026-07-27 at 2.08.17 PM (1).jpeg",
+                    eje: 2,
+                },
+                {
+                    idx: 7,
+                    file: "WhatsApp Image 2026-07-27 at 2.08.17 PM.jpeg",
+                    eje: 3,
+                },
+                {
+                    idx: 8,
+                    file: "WhatsApp Image 2026-07-27 at 2.08.18 PM (1).jpeg",
+                    eje: 4,
+                },
+                {
+                    idx: 9,
+                    file: "WhatsApp Image 2026-07-27 at 2.08.18 PM (2).jpeg",
+                    eje: 1,
+                },
+                {
+                    idx: 10,
+                    file: "WhatsApp Image 2026-07-27 at 2.08.18 PM (3).jpeg",
+                    eje: 2,
+                },
+                {
+                    idx: 11,
+                    file: "WhatsApp Image 2026-07-27 at 2.08.18 PM (4).jpeg",
+                    eje: 3,
+                },
+                {
+                    idx: 12,
+                    file: "WhatsApp Image 2026-07-27 at 2.08.18 PM.jpeg",
+                    eje: 4,
+                },
+                {
+                    idx: 13,
+                    file: "WhatsApp Image 2026-07-27 at 2.08.19 PM.jpeg",
+                    eje: 1,
+                },
+                {
+                    idx: 14,
+                    file: "WhatsApp Image 2026-07-28 at 11.48.52 AM.jpeg",
+                    eje: 2,
+                },
+                {
+                    idx: 15,
+                    file: "WhatsApp Image 2026-07-28 at 11.48.59 AM.jpeg",
+                    eje: 3,
+                },
+                {
+                    idx: 16,
+                    file: "WhatsApp Image 2026-07-28 at 12.16.36 PM.jpeg",
+                    eje: 4,
+                },
+                {
+                    idx: 17,
+                    file: "WhatsApp Image 2026-07-28 at 12.27.08 PM.jpeg",
+                    eje: 1,
+                },
+                {
+                    idx: 18,
+                    file: "WhatsApp Image 2026-07-28 at 2.35.44 PM.jpeg",
+                    eje: 2,
+                },
+                {
+                    idx: 19,
+                    file: "WhatsApp Image 2026-07-28 at 2.42.47 PM.jpeg",
+                    eje: 3,
+                },
+                {
+                    idx: 20,
+                    file: "WhatsApp Image 2026-07-28 at 2.45.32 PM.jpeg",
+                    eje: 4,
+                },
+                {
+                    idx: 21,
+                    file: "WhatsApp Image 2026-07-28 at 5.30.19 PM (1).jpeg",
+                    eje: 1,
+                },
+                {
+                    idx: 22,
+                    file: "WhatsApp Image 2026-07-28 at 5.30.19 PM (2).jpeg",
+                    eje: 2,
+                },
+                {
+                    idx: 23,
+                    file: "WhatsApp Image 2026-07-28 at 5.30.19 PM (3).jpeg",
+                    eje: 3,
+                },
+                {
+                    idx: 24,
+                    file: "WhatsApp Image 2026-07-28 at 5.30.19 PM.jpeg",
+                    eje: 4,
+                },
+                {
+                    idx: 25,
+                    file: "WhatsApp Image 2026-07-28 at 5.30.20 PM (1).jpeg",
+                    eje: 1,
+                },
+                {
+                    idx: 26,
+                    file: "WhatsApp Image 2026-07-28 at 5.30.20 PM (2).jpeg",
+                    eje: 2,
+                },
+                {
+                    idx: 27,
+                    file: "WhatsApp Image 2026-07-28 at 5.30.20 PM.jpeg",
+                    eje: 3,
+                },
+                {
+                    idx: 28,
+                    file: "WhatsApp Image 2026-07-28 at 5.30.21 PM.jpeg",
+                    eje: 4,
+                },
+                {
+                    idx: 29,
+                    file: "WhatsApp Image 2026-07-28 at 7.06.42 PM.jpeg",
+                    eje: 1,
+                },
+                {
+                    idx: 30,
+                    file: "WhatsApp Image 2026-07-28 at 7.06.55 PM.jpeg",
+                    eje: 2,
+                },
+                {
+                    idx: 31,
+                    file: "WhatsApp Image 2026-07-30 at 11.50.40 AM.jpeg",
+                    eje: 3,
+                },
+                {
+                    idx: 32,
+                    file: "WhatsApp Image 2026-07-30 at 5.30.30 PM.jpeg",
+                    eje: 4,
+                },
+                {
+                    idx: 33,
+                    file: "WhatsApp Image 2026-07-31 at 5.41.59 PM.jpeg",
+                    eje: 1,
+                },
+                {
+                    idx: 34,
+                    file: "WhatsApp Image 2026-07-31 at 5.42.39 PM.jpeg",
+                    eje: 2,
+                },
+                {
+                    idx: 35,
+                    file: "WhatsApp Image 2026-07-31 at 8.42.43 AM.jpeg",
+                    eje: 3,
+                },
+                {
+                    idx: 36,
+                    file: "WhatsApp Image 2026-07-31 at 9.22.12 AM (1).jpeg",
+                    eje: 4,
+                },
+                {
+                    idx: 37,
+                    file: "WhatsApp Image 2026-07-31 at 9.22.12 AM.jpeg",
+                    eje: 1,
+                },
+                {
+                    idx: 38,
+                    file: "WhatsApp Image 2026-07-31 at 9.26.31 AM.jpeg",
+                    eje: 2,
+                },
+                {
+                    idx: 39,
+                    file: "WhatsApp Image 2026-08-01 at 1.11.30 PM.jpeg",
+                    eje: 3,
+                },
+                {
+                    idx: 40,
+                    file: "WhatsApp Image 2026-08-01 at 1.11.31 PM (1).jpeg",
+                    eje: 4,
+                },
+                {
+                    idx: 41,
+                    file: "WhatsApp Image 2026-08-01 at 1.11.31 PM (2).jpeg",
+                    eje: 1,
+                },
+                {
+                    idx: 42,
+                    file: "WhatsApp Image 2026-08-01 at 1.11.31 PM.jpeg",
+                    eje: 2,
+                },
+                {
+                    idx: 43,
+                    file: "WhatsApp Image 2026-08-01 at 1.11.32 PM.jpeg",
+                    eje: 3,
+                },
+                {
+                    idx: 44,
+                    file: "WhatsApp Image 2026-08-01 at 1.11.33 PM (1).jpeg",
+                    eje: 4,
+                },
+                {
+                    idx: 45,
+                    file: "WhatsApp Image 2026-08-01 at 1.11.33 PM (2).jpeg",
+                    eje: 1,
+                },
+                {
+                    idx: 46,
+                    file: "WhatsApp Image 2026-08-01 at 1.11.33 PM.jpeg",
+                    eje: 2,
+                },
+                {
+                    idx: 47,
+                    file: "WhatsApp Image 2026-08-01 at 1.11.43 PM.jpeg",
+                    eje: 3,
+                },
+                {
+                    idx: 48,
+                    file: "WhatsApp Image 2026-08-03 at 11.16.03 AM.jpeg",
+                    eje: 4,
+                },
+                {
+                    idx: 49,
+                    file: "WhatsApp Image 2026-08-03 at 11.16.16 AM.jpeg",
+                    eje: 1,
+                },
+                {
+                    idx: 50,
+                    file: "WhatsApp Image 2026-08-03 at 11.20.14 AM.jpeg",
+                    eje: 2,
+                },
+                {
+                    idx: 51,
+                    file: "WhatsApp Image 2026-08-03 at 11.21.02 AM.jpeg",
+                    eje: 3,
+                },
+                {
+                    idx: 52,
+                    file: "WhatsApp Image 2026-08-03 at 11.21.13 AM.jpeg",
+                    eje: 4,
+                },
+                {
+                    idx: 53,
+                    file: "WhatsApp Image 2026-08-03 at 9.14.41 AM.jpeg",
+                    eje: 1,
+                },
+            ];
 
-        const ejeLabels = {
-            1: "Eje I: Contexto y Fachada",
-            2: "Eje II: Autogestión Azotea",
-            3: "Eje III: Patologías Estructurales",
-            4: "Eje IV: Evaluación de Riesgo Civil"
-        };
+            const ejeLabels = {
+                1: "Eje I: Contexto y Fachada",
+                2: "Eje II: Autogestión Azotea",
+                3: "Eje III: Patologías Estructurales",
+                4: "Eje IV: Evaluación de Riesgo Civil",
+            };
 
-        function renderGallery() {
-            const grid = document.getElementById('gallery-grid');
-            grid.innerHTML = galleryImages.map(img => {
-                const ejeClass = `eje-${img.eje}`;
-                const label = ejeLabels[img.eje];
-                return `
-                <div class="gallery-card ${ejeClass} bg-slate-800 rounded-xl overflow-hidden border border-slate-700 shadow-lg hover:border-sky-500 transition-all">
-                    <a href="img/${img.file}" target="_blank" onclick="openLightbox(event, 'img/${img.file}', 'Inspección ENKA #${img.idx} - ${label}')" class="block">
-                        <img src="img/${img.file}" alt="Inspección ENKA #${img.idx}" class="w-full h-56 object-cover hover:scale-105 transition-transform duration-300" loading="lazy">
-                    </a>
-                    <div class="p-4">
-                        <span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-full bg-sky-950 text-sky-400 border border-sky-800 mb-2">
+            const DRIVE_SSOT_VAULT =
+                "https://drive.google.com/drive/folders/1oq-3k-wP2NEOUZrRoPTJXtxlBwbWc0OY?usp=drive_link";
+
+            function renderGallery() {
+                const grid = document.getElementById("gallery-grid");
+                grid.innerHTML = galleryImages
+                    .map((img) => {
+                        const ejeClass = `eje-${img.eje}`;
+                        const label = ejeLabels[img.eje];
+                        return `
+                <div class="gallery-card ${ejeClass} bg-slate-900 rounded-xl overflow-hidden border border-slate-800 shadow-lg hover:border-sky-500 transition-all flex flex-col justify-between">
+                    <div class="p-4 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between">
+                        <span class="text-xs font-bold text-sky-400 font-mono">REGISTRO #${img.idx}</span>
+                        <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-mono">Zero-Copy SSoT</span>
+                    </div>
+                    <div class="p-5 flex flex-col items-center justify-center text-center space-y-3 bg-gradient-to-b from-slate-900 to-slate-950 min-h-[160px]">
+                        <div class="w-12 h-12 rounded-xl bg-sky-950/60 border border-sky-800/60 flex items-center justify-center text-sky-400">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <p class="text-xs text-slate-300 font-mono line-clamp-2 max-w-[240px]" title="${img.file}">${img.file}</p>
+                    </div>
+                    <div class="p-4 bg-slate-950 border-t border-slate-800 space-y-3">
+                        <span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-full bg-sky-950 text-sky-400 border border-sky-800 w-full text-center">
                             ${label}
                         </span>
-                        <p class="text-xs text-slate-300 font-mono truncate">${img.file}</p>
+                        <div class="grid grid-cols-2 gap-2 pt-1">
+                            <button onclick="openLightbox(event, \x27${img.file}\x27, \x27Inspección ENKA #${img.idx} — ${label}\x27)" class="w-full py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg border border-slate-700 transition-colors">
+                                Inspeccionar
+                            </button>
+                            <a href="${DRIVE_SSOT_VAULT}" target="_blank" rel="noopener noreferrer" class="w-full py-1.5 bg-sky-950 hover:bg-sky-900 text-sky-300 text-xs font-semibold rounded-lg border border-sky-800 text-center transition-colors flex items-center justify-center gap-1">
+                                Drive SSoT ↗
+                            </a>
+                        </div>
                     </div>
                 </div>
                 `;
-            }).join('');
-        }
+                    })
+                    .join("");
+            }
 
-        function filterGallery(category) {
-            const cards = document.querySelectorAll(".gallery-card");
-            const buttons = document.querySelectorAll(".filter-btn");
+            function filterGallery(category) {
+                const cards = document.querySelectorAll(".gallery-card");
+                const buttons = document.querySelectorAll(".filter-btn");
 
-            buttons.forEach(btn => btn.classList.remove("active"));
-            event.target.classList.add("active");
+                buttons.forEach((btn) => btn.classList.remove("active"));
+                event.target.classList.add("active");
 
-            cards.forEach(card => {
-                if (category === "all" || card.classList.contains(category)) {
-                    card.style.display = "block";
-                } else {
-                    card.style.display = "none";
-                }
+                cards.forEach((card) => {
+                    if (
+                        category === "all" ||
+                        card.classList.contains(category)
+                    ) {
+                        card.style.display = "block";
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+            }
+
+            function openLightbox(e, filename, title) {
+                if (e) e.preventDefault();
+                document.getElementById("lightbox-title").innerText = title;
+                const imgContainer =
+                    document.getElementById("lightbox-img").parentElement;
+                imgContainer.innerHTML = `
+                    <div class="p-8 text-center space-y-4 max-w-lg mx-auto">
+                        <div class="w-16 h-16 mx-auto rounded-2xl bg-sky-950 border border-sky-800 flex items-center justify-center text-sky-400">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-white font-mono mb-1">${filename}</p>
+                            <p class="text-xs text-slate-400">Activo multimedia salvaguardado bajo arquitectura Zero-Copy en Bóveda Oficial Google Drive.</p>
+                        </div>
+                        <a href="${DRIVE_SSOT_VAULT}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold rounded-xl transition-all shadow-lg">
+                            Abrir en Bóveda Multimedia Drive ↗
+                        </a>
+                    </div>
+                `;
+                document.getElementById("lightbox").classList.remove("hidden");
+            }
+
+            function closeLightbox() {
+                document.getElementById("lightbox").classList.add("hidden");
+            }
+
+            // Initialize
+            document.addEventListener("DOMContentLoaded", renderGallery);
+
+            // Keyboard support for lightbox
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") closeLightbox();
             });
-        }
-
-        function openLightbox(e, src, title) {
-            e.preventDefault();
-            document.getElementById("lightbox-img").src = src;
-            document.getElementById("lightbox-title").innerText = title;
-            document.getElementById("lightbox").classList.remove("hidden");
-        }
-
-        function closeLightbox() {
-            document.getElementById("lightbox").classList.add("hidden");
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', renderGallery);
-
-        // Keyboard support for lightbox
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeLightbox();
-        });
-    </script>
-</body>
+        </script>
+    </body>
 </html>

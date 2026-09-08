@@ -5,9 +5,13 @@ import sqlite3
 import tempfile
 
 # Ephemeral database for Zero-Copy compliance (destroyed on reboot/make clean-vault)
-DB_PATH = os.path.join(tempfile.gettempdir(), 'enka_patrimonial_vault.db')  # nosec: intentional ephemeral storage for Zero-Copy
-SCHEMA_PATH = os.path.expanduser("~/workspaces/enka-patrimonial/design/enka_local_fts5.sql")
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+DB_PATH = os.path.join(tempfile.gettempdir(), "enka_patrimonial_vault.db")  # nosec: intentional ephemeral storage for Zero-Copy
+SCHEMA_PATH = os.path.expanduser(
+    "~/workspaces/enka-patrimonial/design/enka_local_fts5.sql"
+)
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 
 class EnkaAuditorEngine:
@@ -18,10 +22,12 @@ class EnkaAuditorEngine:
     def inicializar_boveda(self):
         if os.path.exists(SCHEMA_PATH):
             try:
-                with open(SCHEMA_PATH, encoding='utf-8') as f:
+                with open(SCHEMA_PATH, encoding="utf-8") as f:
                     self.cursor.executescript(f.read())
                 self.conn.commit()
-                logging.info("🛡️ [ENKA-System] Bóveda efímera FTS5 inicializada (Zero-Copy).")
+                logging.info(
+                    "🛡️ [ENKA-System] Bóveda efímera FTS5 inicializada (Zero-Copy)."
+                )
             except OSError as e:
                 logging.error(f"❌ Error leyendo schema: {e}")
                 raise
@@ -30,11 +36,12 @@ class EnkaAuditorEngine:
         datos_fin = [
             ("Apto 17", "Iris Useche", 45.0, "BNC-9912", "Sep 04, 2026"),
             ("Apto 05", "Gregory Rodríguez", 60.0, "BNC-8831", "Sep 05, 2026"),
-            ("Apto 12", "María González", 30.0, "BNC-7745", "Sep 03, 2026")
+            ("Apto 12", "María González", 30.0, "BNC-7745", "Sep 03, 2026"),
         ]
         try:
             self.cursor.executemany(
-                "INSERT INTO financiero_caja_chica (apto_id, residente_nombre, monto_usd, referencia_bnc, fecha_pago) VALUES (?, ?, ?, ?, ?)", datos_fin
+                "INSERT INTO financiero_caja_chica (apto_id, residente_nombre, monto_usd, referencia_bnc, fecha_pago) VALUES (?, ?, ?, ?, ?)",
+                datos_fin,
             )
             self.conn.commit()
             logging.info("⚡ [SSoT-In-Memory] Matriz financiera simulada cargada.")
@@ -43,13 +50,32 @@ class EnkaAuditorEngine:
 
         # Demo arquitectónico
         datos_arq = [
-            ("Sep 01, 2026", "Fase II", "Columna corta eje 3", "Carbonatación avanzada con armadura expuesta. Tratamiento con Sika Rustex + SikaGrout 212.", "Gregory Rodríguez"),
-            ("Sep 03, 2026", "Fase II", "Friso entrada principal", "Desprendimiento de revoque por humedad capilar. Reposición con mortero transpirable.", "Gregory Rodríguez"),
-            ("Sep 05, 2026", "Fase III", "Hito herrería Av. Fermín Toro", "Oxidación severa en ornamentos Art Decó. Requiere desoxidación y protección catódica.", "Gregory Rodríguez"),
+            (
+                "Sep 01, 2026",
+                "Fase II",
+                "Columna corta eje 3",
+                "Carbonatación avanzada con armadura expuesta. Tratamiento con Sika Rustex + SikaGrout 212.",
+                "Gregory Rodríguez",
+            ),
+            (
+                "Sep 03, 2026",
+                "Fase II",
+                "Friso entrada principal",
+                "Desprendimiento de revoque por humedad capilar. Reposición con mortero transpirable.",
+                "Gregory Rodríguez",
+            ),
+            (
+                "Sep 05, 2026",
+                "Fase III",
+                "Hito herrería Av. Fermín Toro",
+                "Oxidación severa en ornamentos Art Decó. Requiere desoxidación y protección catódica.",
+                "Gregory Rodríguez",
+            ),
         ]
         try:
             self.cursor.executemany(
-                "INSERT INTO arquitectonico_registro (fecha_suceso, fase_intervencion, componente_estructural, diagnostico_patologia, maestro_obra) VALUES (?, ?, ?, ?, ?)", datos_arq
+                "INSERT INTO arquitectonico_registro (fecha_suceso, fase_intervencion, componente_estructural, diagnostico_patologia, maestro_obra) VALUES (?, ?, ?, ?, ?)",
+                datos_arq,
             )
             self.conn.commit()
             logging.info("⚡ [SSoT-In-Memory] Matriz arquitectónica simulada cargada.")
@@ -82,15 +108,24 @@ class EnkaAuditorEngine:
         self.cursor.execute(query, (termino,))
         return self.cursor.fetchall()
 
-    def insertar_arquitectonico(self, fecha: str, fase: str, componente: str, diagnostico: str, maestro: str = 'Gregory Rodríguez'):
+    def insertar_arquitectonico(
+        self,
+        fecha: str,
+        fase: str,
+        componente: str,
+        diagnostico: str,
+        maestro: str = "Gregory Rodríguez",
+    ):
         """Inserta registro arquitectónico y actualiza índice FTS5 automáticamente."""
         # Parameterized query to prevent SQL injection
         self.cursor.execute(
             "INSERT INTO arquitectonico_registro (fecha_suceso, fase_intervencion, componente_estructural, diagnostico_patologia, maestro_obra) VALUES (?, ?, ?, ?, ?)",
-            (fecha, fase, componente, diagnostico, maestro)
+            (fecha, fase, componente, diagnostico, maestro),
         )
         self.conn.commit()
-        logging.info(f"✅ [Arquitectónico] Registro insertado: {componente} - {diagnostico[:50]}...")
+        logging.info(
+            f"✅ [Arquitectónico] Registro insertado: {componente} - {diagnostico[:50]}..."
+        )
 
     def cerrar(self):
         self.conn.close()
