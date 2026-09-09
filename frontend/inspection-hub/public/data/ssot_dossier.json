@@ -1,0 +1,299 @@
+{
+  "success": true,
+  "folderId": "1oq-3k-wP2NEOUZrRoPTJXtxlBwbWc0OY",
+  "fileCount": 17,
+  "files": [
+    {
+      "id": "1a4afc5880a107eef84f9f010065",
+      "name": "20240218_065734.jpg",
+      "thumbnailLink": "https://drive.google.com/thumbnail?id=1a4afc5880a107eef84f9f010065&sz=w400",
+      "description": "Ubicación: Ubicación no especificada | Diagnóstico: Pendiente de diagnóstico técnico | Fase: Fase pendiente",
+      "meta": {
+        "diagnosticoTecnico": "Pendiente de diagnóstico técnico",
+        "faseObra": "Fase pendiente",
+        "ubicacion": "Ubicación no especificada",
+        "sha256": "a58da1bed9f17bfbdfc5fdfceb6733e46c1abde0ec5893e8448d72062199da7c",
+        "size": 3878741,
+        "mimeType": "image/jpeg",
+        "uploadedAt": "2026-09-09T18:15:48.007634Z",
+        "pqcSignature": null,
+        "pqcAlgorithm": null
+      }
+    },
+    {
+      "id": "730506ccb9601076db49fcddbc4d",
+      "name": "20240218_065753.jpg",
+      "thumbnailLink": "https://drive.google.com/thumbnail?id=730506ccb9601076db49fcddbc4d&sz=w400",
+      "description": "Ubicación: Ubicación no especificada | Diagnóstico: Pendiente de diagnóstico técnico | Fase: Fase pendiente",
+      "meta": {
+        "diagnosticoTecnico": "Pendiente de diagnóstico técnico",
+        "faseObra": "Fase pendiente",
+        "ubicacion": "Ubicación no especificada",
+        "sha256": "c50b7de5b7ea67f56f79eeb470c007916851bebd7ff2d30571ed46092df14c62",
+        "size": 3501466,
+        "mimeType": "image/jpeg",
+        "uploadedAt": "2026-09-09T18:15:48.322832Z",
+        "pqcSignature": null,
+        "pqcAlgorithm": null
+      }
+    },
+    {
+      "id": "a1f15d4a4b2d097b14339d9072f0",
+      "name": "20240218_065759.jpg",
+      "thumbnailLink": "https://drive.google.com/thumbnail?id=a1f15d4a4b2d097b14339d9072f0&sz=w400",
+      "description": "Ubicación: Ubicación no especificada | Diagnóstico: Pendiente de diagnóstico técnico | Fase: Fase pendiente",
+      "meta": {
+        "diagnosticoTecnico": "Pendiente de diagnóstico técnico",
+        "faseObra": "Fase pendiente",
+        "ubicacion": "Ubicación no especificada",
+        "sha256": "5b63b47c8f9ad179f175727f5a48228b0841b0a116081c6e008f27ede786f69b",
+        "size": 3443726,
+        "mimeType": "image/jpeg",
+        "uploadedAt": "2026-09-09T18:15:48.742074Z",
+        "pqcSignature": null,
+        "pqcAlgorithm": null
+      }
+    },
+    {
+      "id": "f66c51a31bea406fb7a45d974eb3",
+      "name": "20240218_065839.jpg",
+      "thumbnailLink": "https://drive.google.com/thumbnail?id=f66c51a31bea406fb7a45d974eb3&sz=w400",
+      "description": "Ubicación: Ubicación no especificada | Diagnóstico: Pendiente de diagnóstico técnico | Fase: Fase pendiente",
+      "meta": {
+        "diagnosticoTecnico": "Pendiente de diagnóstico técnico",
+        "faseObra": "Fase pendiente",
+        "ubicacion": "Ubicación no especificada",
+        "sha256": "c9323673f30b0675cb4cdc8e3e93168b83edf4fa82f01ed13b8666d20f92cecf",
+        "size": 3635527,
+        "mimeType": "image/jpeg",
+        "uploadedAt": "2026-09-09T18:15:49.044960Z",
+        "pqcSignature": null,
+        "pqcAlgorithm": null
+      }
+    },
+    {
+      "id": "febc52fcf21c50af1e86f61b18ad",
+      "name": "20240421_163329.jpg",
+      "thumbnailLink": "https://drive.google.com/thumbnail?id=febc52fcf21c50af1e86f61b18ad&sz=w400",
+      "description": "Ubicación: Ubicación no especificada | Diagnóstico: Pendiente de diagnóstico técnico | Fase: Fase pendiente",
+      "meta": {
+        "diagnosticoTecnico": "Pendiente de diagnóstico técnico",
+        "faseObra": "Fase pendiente",
+        "ubicacion": "Ubicación no especificada",
+        "sha256": "8e65cda3ff9cf8d7b7acc04570c5bb1b8ae57375c783984b8d3a014f08681bd2",
+        "size": 4867437,
+        "mimeType": "image/jpeg",
+        "uploadedAt": "2026-09-09T18:15:49.360473Z",
+        "pqcSignature": null,
+        "pqcAlgorithm": null
+      }
+    },
+    {
+      "id": "3c04205b68a87846b1d4bbcb7c97",
+      "name": "20241111_092815.jpg",
+      "thumbnailLink": "https://drive.google.com/thumbnail?id=3c04205b68a87846b1d4bbcb7c97&sz=w400",
+      "description": "Ubicación: Ubicación no especificada | Diagnóstico: Pendiente de diagnóstico técnico | Fase: Fase pendiente",
+      "meta": {
+        "diagnosticoTecnico": "Pendiente de diagnóstico técnico",
+        "faseObra": "Fase pendiente",
+        "ubicacion": "Ubicación no especificada",
+        "sha256": "43acefc47f209aed6f8906a5091ce617ae418550c0fec33214b60a05f5167231",
+        "size": 4096420,
+        "mimeType": "image/jpeg",
+        "uploadedAt": "2026-09-09T18:15:49.738444Z",
+        "pqcSignature": null,
+        "pqcAlgorithm": null
+      }
+    },
+    {
+      "id": "02b7f239e659878da4c7e8d87bc2",
+      "name": "20241111_092843.jpg",
+      "thumbnailLink": "https://drive.google.com/thumbnail?id=02b7f239e659878da4c7e8d87bc2&sz=w400",
+      "description": "Ubicación: Ubicación no especificada | Diagnóstico: Pendiente de diagnóstico técnico | Fase: Fase pendiente",
+      "meta": {
+        "diagnosticoTecnico": "Pendiente de diagnóstico técnico",
+        "faseObra": "Fase pendiente",
+        "ubicacion": "Ubicación no especificada",
+        "sha256": "7a317988251052382344af35faf4ed590dedbb77cb1537c91bb429cd941a0149",
+        "size": 5299756,
+        "mimeType": "image/jpeg",
+        "uploadedAt": "2026-09-09T18:15:50.064832Z",
+        "pqcSignature": null,
+        "pqcAlgorithm": null
+      }
+    },
+    {
+      "id": "492e57c87e747a4b3ad986c77f19",
+      "name": "20241111_092847.jpg",
+      "thumbnailLink": "https://drive.google.com/thumbnail?id=492e57c87e747a4b3ad986c77f19&sz=w400",
+      "description": "Ubicación: Ubicación no especificada | Diagnóstico: Pendiente de diagnóstico técnico | Fase: Fase pendiente",
+      "meta": {
+        "diagnosticoTecnico": "Pendiente de diagnóstico técnico",
+        "faseObra": "Fase pendiente",
+        "ubicacion": "Ubicación no especificada",
+        "sha256": "dd8534f5d28d592ae759dcf14fb0125f9829846fbdfc6c391d01acbeaf33a508",
+        "size": 5123970,
+        "mimeType": "image/jpeg",
+        "uploadedAt": "2026-09-09T18:15:50.377606Z",
+        "pqcSignature": null,
+        "pqcAlgorithm": null
+      }
+    },
+    {
+      "id": "659306dc044e1635a8d7db3ca805",
+      "name": "20241111_092853.jpg",
+      "thumbnailLink": "https://drive.google.com/thumbnail?id=659306dc044e1635a8d7db3ca805&sz=w400",
+      "description": "Ubicación: Ubicación no especificada | Diagnóstico: Pendiente de diagnóstico técnico | Fase: Fase pendiente",
+      "meta": {
+        "diagnosticoTecnico": "Pendiente de diagnóstico técnico",
+        "faseObra": "Fase pendiente",
+        "ubicacion": "Ubicación no especificada",
+        "sha256": "49d02a6643a1f6f499fe3b1847c92c6301e9abe78b8508bfa0bbe93605904510",
+        "size": 4677392,
+        "mimeType": "image/jpeg",
+        "uploadedAt": "2026-09-09T18:15:50.562867Z",
+        "pqcSignature": null,
+        "pqcAlgorithm": null
+      }
+    },
+    {
+      "id": "cd6a05e0f9b14ebb06b7bf9d104d",
+      "name": "20250402_133057.jpg",
+      "thumbnailLink": "https://drive.google.com/thumbnail?id=cd6a05e0f9b14ebb06b7bf9d104d&sz=w400",
+      "description": "Ubicación: Ubicación no especificada | Diagnóstico: Pendiente de diagnóstico técnico | Fase: Fase pendiente",
+      "meta": {
+        "diagnosticoTecnico": "Pendiente de diagnóstico técnico",
+        "faseObra": "Fase pendiente",
+        "ubicacion": "Ubicación no especificada",
+        "sha256": "bb8d6f4d6c620a2c5d86b8d74bcf9523077e02618f9e6e2209fba1af8533e239",
+        "size": 2832007,
+        "mimeType": "image/jpeg",
+        "uploadedAt": "2026-09-09T18:15:50.726566Z",
+        "pqcSignature": null,
+        "pqcAlgorithm": null
+      }
+    },
+    {
+      "id": "b92ed7f06fd96f7f223d4c54b539",
+      "name": "20250423_084949.jpg",
+      "thumbnailLink": "https://drive.google.com/thumbnail?id=b92ed7f06fd96f7f223d4c54b539&sz=w400",
+      "description": "Ubicación: Ubicación no especificada | Diagnóstico: Pendiente de diagnóstico técnico | Fase: Fase pendiente",
+      "meta": {
+        "diagnosticoTecnico": "Pendiente de diagnóstico técnico",
+        "faseObra": "Fase pendiente",
+        "ubicacion": "Ubicación no especificada",
+        "sha256": "703b9d282d368d1d34cae8d59fb9ae281bfd4526136b6cd4fae1d9cda4c0de47",
+        "size": 3874215,
+        "mimeType": "image/jpeg",
+        "uploadedAt": "2026-09-09T18:15:50.876608Z",
+        "pqcSignature": null,
+        "pqcAlgorithm": null
+      }
+    },
+    {
+      "id": "c3f694a7dac3626ce3d6578455b0",
+      "name": "20250423_085016.jpg",
+      "thumbnailLink": "https://drive.google.com/thumbnail?id=c3f694a7dac3626ce3d6578455b0&sz=w400",
+      "description": "Ubicación: Ubicación no especificada | Diagnóstico: Pendiente de diagnóstico técnico | Fase: Fase pendiente",
+      "meta": {
+        "diagnosticoTecnico": "Pendiente de diagnóstico técnico",
+        "faseObra": "Fase pendiente",
+        "ubicacion": "Ubicación no especificada",
+        "sha256": "97dc503efb4d8b59527b9fbf1940c9ea3bc0375b1d41f63f2f1ca66d2671c552",
+        "size": 4394533,
+        "mimeType": "image/jpeg",
+        "uploadedAt": "2026-09-09T18:15:51.090866Z",
+        "pqcSignature": null,
+        "pqcAlgorithm": null
+      }
+    },
+    {
+      "id": "bc2eb167e1e38e98f808158506de",
+      "name": "20260714_090938.jpg",
+      "thumbnailLink": "https://drive.google.com/thumbnail?id=bc2eb167e1e38e98f808158506de&sz=w400",
+      "description": "Ubicación: Ubicación no especificada | Diagnóstico: Pendiente de diagnóstico técnico | Fase: Fase pendiente",
+      "meta": {
+        "diagnosticoTecnico": "Pendiente de diagnóstico técnico",
+        "faseObra": "Fase pendiente",
+        "ubicacion": "Ubicación no especificada",
+        "sha256": "28943a3cecbcfa19a83b503f740dc81d24cab4807999594db7c19ed447de7965",
+        "size": 3554514,
+        "mimeType": "image/jpeg",
+        "uploadedAt": "2026-09-09T18:15:51.310889Z",
+        "pqcSignature": null,
+        "pqcAlgorithm": null
+      }
+    },
+    {
+      "id": "52b128795af5159ace09e4dfccce",
+      "name": "20260717_123102.jpg",
+      "thumbnailLink": "https://drive.google.com/thumbnail?id=52b128795af5159ace09e4dfccce&sz=w400",
+      "description": "Ubicación: Ubicación no especificada | Diagnóstico: Pendiente de diagnóstico técnico | Fase: Fase pendiente",
+      "meta": {
+        "diagnosticoTecnico": "Pendiente de diagnóstico técnico",
+        "faseObra": "Fase pendiente",
+        "ubicacion": "Ubicación no especificada",
+        "sha256": "33aefa5846739ac8ee26e0bd593706c04027ebf94a18fa780793141dc79b1e2c",
+        "size": 5578834,
+        "mimeType": "image/jpeg",
+        "uploadedAt": "2026-09-09T18:15:51.599030Z",
+        "pqcSignature": null,
+        "pqcAlgorithm": null
+      }
+    },
+    {
+      "id": "0369f17c17ead3e66c69cb13ece4",
+      "name": "20260717_123156.jpg",
+      "thumbnailLink": "https://drive.google.com/thumbnail?id=0369f17c17ead3e66c69cb13ece4&sz=w400",
+      "description": "Ubicación: Ubicación no especificada | Diagnóstico: Pendiente de diagnóstico técnico | Fase: Fase pendiente",
+      "meta": {
+        "diagnosticoTecnico": "Pendiente de diagnóstico técnico",
+        "faseObra": "Fase pendiente",
+        "ubicacion": "Ubicación no especificada",
+        "sha256": "58086f3aaff6af068616130d04350b9ee6fbbeb8de96e3b5948820f41391f4e7",
+        "size": 4824583,
+        "mimeType": "image/jpeg",
+        "uploadedAt": "2026-09-09T18:15:53.507668Z",
+        "pqcSignature": null,
+        "pqcAlgorithm": null
+      }
+    },
+    {
+      "id": "446dccfd6a51c62a3fe9f0c3fbf8",
+      "name": "20260717_123246.jpg",
+      "thumbnailLink": "https://drive.google.com/thumbnail?id=446dccfd6a51c62a3fe9f0c3fbf8&sz=w400",
+      "description": "Ubicación: Ubicación no especificada | Diagnóstico: Pendiente de diagnóstico técnico | Fase: Fase pendiente",
+      "meta": {
+        "diagnosticoTecnico": "Pendiente de diagnóstico técnico",
+        "faseObra": "Fase pendiente",
+        "ubicacion": "Ubicación no especificada",
+        "sha256": "32b93904258e9a937a8a82e33793413704b340f3f033d5ed35dbf3a35cdbba2a",
+        "size": 5387382,
+        "mimeType": "image/jpeg",
+        "uploadedAt": "2026-09-09T18:15:53.702722Z",
+        "pqcSignature": null,
+        "pqcAlgorithm": null
+      }
+    },
+    {
+      "id": "9b91d0a5992157b355bb640a2cf9",
+      "name": "20260717_123449.jpg",
+      "thumbnailLink": "https://drive.google.com/thumbnail?id=9b91d0a5992157b355bb640a2cf9&sz=w400",
+      "description": "Ubicación: Ubicación no especificada | Diagnóstico: Pendiente de diagnóstico técnico | Fase: Fase pendiente",
+      "meta": {
+        "diagnosticoTecnico": "Pendiente de diagnóstico técnico",
+        "faseObra": "Fase pendiente",
+        "ubicacion": "Ubicación no especificada",
+        "sha256": "984a376e5c3105e7f8f428e2b7fe2706598c4ff912dc71925364f131b9ac8a37",
+        "size": 5862227,
+        "mimeType": "image/jpeg",
+        "uploadedAt": "2026-09-09T18:15:53.942191Z",
+        "pqcSignature": null,
+        "pqcAlgorithm": null
+      }
+    }
+  ],
+  "error": null,
+  "generatedAt": "2026-09-09T18:15:53.942691Z",
+  "etlVersion": "36.0.0"
+}
