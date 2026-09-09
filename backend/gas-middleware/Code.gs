@@ -4,9 +4,9 @@
  */
 
 /**
- * Function to get photos from Drive folder
+ * Function to get photos from Drive folder with JSON metadata parsing
  * @param {Object} e - Event object with parameter folderId
- * @return {Object} JSON with thumbnail URLs and metadata
+ * @return {Object} JSON with thumbnail URLs and parsed metadata
  */
 function doGet(e) {
   try {
@@ -22,6 +22,22 @@ function doGet(e) {
     
     while (files.hasNext()) {
       var file = files.next();
+      // Parse JSON description from file, with defaults
+      var description = file.getDescription();
+      var parsedMeta = {};
+      try {
+        parsedMeta = JSON.parse(description);
+      } catch (e) {
+        // Use defaults if description is empty or not valid JSON
+        parsedMeta = {
+          id_evidencia: file.getName(),
+          fecha_captura: '',
+          ubicacion_geo: '',
+          diagnostico_tecnico: 'Sin diagnóstico asignado',
+          fase_obra: 'Fase pending'
+        };
+      }
+      
       filesArray.push({
         id: file.getId(),
         name: file.getName(),
@@ -29,7 +45,9 @@ function doGet(e) {
         downloadLink: file.getDownloadUrl(),
         size: file.getSize(),
         created: file.getDateCreated(),
-        modified: file.getDateModified()
+        modified: file.getDateModified(),
+        description: file.getDescription(),
+        meta: parsedMeta
       });
     }
     
@@ -38,8 +56,8 @@ function doGet(e) {
       return a.name.localeCompare(b.name);
     });
     
-    // Return JSON response
-    return ContentService
+    // Return JSON response with CORS headers
+    var output = ContentService
       .setMimeType(ContentService.MimeType.JSON)
       .publish(JSON.stringify({
         success: true,
@@ -47,14 +65,28 @@ function doGet(e) {
         fileCount: filesArray.length,
         files: filesArray
       }));
+    
+    // Explicit CORS headers for SSoT consumption
+    output = ContentService.addHeader(output, 'Access-Control-Allow-Origin', '*');
+    output = ContentService.addHeader(output, 'Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    output = ContentService.addHeader(output, 'Access-Control-Allow-Headers', 'Content-Type');
+    
+    return output;
   } catch (error) {
     // Return error JSON
-    return ContentService
-      .setMimeType(ContentService.MimeType.JSON)
-      .publish(JSON.stringify({
-        success: false,
-        error: error.message,
-        folderId: e.parameter?.folderId
-      }));
+    try {
+      var errorOutput = ContentService
+        .setMimeType(ContentService.MimeType.JSON)
+        .publish(JSON.stringify({
+          success: false,
+          error: error.message,
+          folderId: e.parameter?.folderId
+        }));
+      return ContentService.addHeader(errorOutput, 'Access-Control-Allow-Origin', '*');
+    } catch (e) {
+      return ContentService
+        .setMimeType(ContentService.MimeType.TEXT)
+        .publish('Error interno del servidor: ' + error.message);
+    }
   }
 }
