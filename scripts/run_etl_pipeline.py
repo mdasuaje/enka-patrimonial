@@ -53,9 +53,10 @@ from pathlib import Path
 # -----------------------------------------------------------------------------
 # CONFIGURACIÓN
 # -----------------------------------------------------------------------------
-DEFAULT_FOLDER_ID = '1oq-3k-wP2NEOUZrRoPTJXtxlBwbWc0OY'
-IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.webp', '.heic', '.tiff', '.tif', '.bmp'}
+DEFAULT_FOLDER_ID = "1oq-3k-wP2NEOUZrRoPTJXtxlBwbWc0OY"
+IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".heic", ".tiff", ".tif", ".bmp"}
 MAX_FILE_SIZE = 50 * 1024 * 1024  # 50MB
+
 
 # -----------------------------------------------------------------------------
 # MODELOS DE DATOS (Pydantic-style validation sin dependencia externa)
@@ -63,89 +64,222 @@ MAX_FILE_SIZE = 50 * 1024 * 1024  # 50MB
 @dataclass
 class FileMeta:
     """Metadatos técnicos normalizados para SSoT"""
+
     diagnostico_tecnico: str
     fase_obra: str
     ubicacion: str
     sha256: str
     size: int
     mime_type: str
-    uploaded_at: str = field(default_factory=lambda: datetime.utcnow().isoformat() + 'Z')
+    uploaded_at: str = field(
+        default_factory=lambda: datetime.utcnow().isoformat() + "Z"
+    )
     # PQC-ready: stub para firma post-cuántica futura
     pqc_signature: str | None = None
     pqc_algorithm: str | None = None  # ej: 'ML-DSA-65' (Dilithium)
 
+
 @dataclass
 class SSOTFile:
     """Estructura de archivo compatible con ssot-bridge.js"""
+
     id: str  # drive_file_id o hash local
     name: str
     thumbnail_link: str
     description: str
     meta: FileMeta
 
+
 @dataclass
 class SSOTResponse:
     """Respuesta completa compatible con loadSSOTMetadata()"""
+
     success: bool
     folder_id: str
     file_count: int
     files: list[SSOTFile]
     error: str | None = None
-    generated_at: str = field(default_factory=lambda: datetime.utcnow().isoformat() + 'Z')
-    etl_version: str = '36.0.0'
+    generated_at: str = field(
+        default_factory=lambda: datetime.utcnow().isoformat() + "Z"
+    )
+    etl_version: str = "36.0.0"
+
 
 # -----------------------------------------------------------------------------
 # PARSER DE METADATOS (heurísticas mejoradas sobre Fase 25/35)
 # -----------------------------------------------------------------------------
 UBICACIONES_CONOCIDAS = [
-    'fachada', 'cubierta', 'sotano', 'sótano', 'escalera', 'ascensor',
-    'vestibulo', 'vestíbulo', 'pasillo', 'habitacion', 'habitación',
-    'bano', 'baño', 'cocina', 'comedor', 'sala', 'balcon', 'balcón',
-    'techo', 'muro', 'columna', 'viga', 'losas', 'cimiento', 'cimentacion',
-    'norte', 'sur', 'este', 'oeste', 'frontal', 'posterior', 'lateral',
-    'interior', 'exterior', 'azotea', 'terraza', 'patio', 'jardin', 'jardín',
-    'garage', 'garaje', 'deposito', 'depósito', 'tanque', 'bomba',
-    'electrico', 'eléctrico', 'hidraulico', 'hidráulico', 'sanitario',
-    'gas', 'aire', 'acondicionado', 'ventilacion', 'ventilación'
+    "fachada",
+    "cubierta",
+    "sotano",
+    "sótano",
+    "escalera",
+    "ascensor",
+    "vestibulo",
+    "vestíbulo",
+    "pasillo",
+    "habitacion",
+    "habitación",
+    "bano",
+    "baño",
+    "cocina",
+    "comedor",
+    "sala",
+    "balcon",
+    "balcón",
+    "techo",
+    "muro",
+    "columna",
+    "viga",
+    "losas",
+    "cimiento",
+    "cimentacion",
+    "norte",
+    "sur",
+    "este",
+    "oeste",
+    "frontal",
+    "posterior",
+    "lateral",
+    "interior",
+    "exterior",
+    "azotea",
+    "terraza",
+    "patio",
+    "jardin",
+    "jardín",
+    "garage",
+    "garaje",
+    "deposito",
+    "depósito",
+    "tanque",
+    "bomba",
+    "electrico",
+    "eléctrico",
+    "hidraulico",
+    "hidráulico",
+    "sanitario",
+    "gas",
+    "aire",
+    "acondicionado",
+    "ventilacion",
+    "ventilación",
 ]
 
 DIAGNOSTICOS_CONOCIDOS = [
-    'grieta', 'fisura', 'humedad', 'filtracion', 'filtración',
-    'desprendimiento', 'corrosion', 'corrosión', 'oxidacion', 'oxidación',
-    'alabeo', 'hundimiento', 'asentamiento', 'falla', 'deterioro',
-    'mancha', 'eflorescencia', 'moho', 'hongo', 'placa', 'revoque',
-    'pintura', 'revestimiento', 'impermeabilizacion', 'impermeabilización',
-    'estructura', 'armadura', 'acero', 'hormigon', 'hormigón', 'concreto',
-    'agrietamiento', 'fisuracion', 'fisuración', 'pandeo', 'pérdida',
-    'seccion', 'sección', 'recubrimiento', 'carbonatacion', 'carbonatación',
-    'cloruros', 'sulfatos', 'alcalinidad', 'ph', 'carbonatado'
+    "grieta",
+    "fisura",
+    "humedad",
+    "filtracion",
+    "filtración",
+    "desprendimiento",
+    "corrosion",
+    "corrosión",
+    "oxidacion",
+    "oxidación",
+    "alabeo",
+    "hundimiento",
+    "asentamiento",
+    "falla",
+    "deterioro",
+    "mancha",
+    "eflorescencia",
+    "moho",
+    "hongo",
+    "placa",
+    "revoque",
+    "pintura",
+    "revestimiento",
+    "impermeabilizacion",
+    "impermeabilización",
+    "estructura",
+    "armadura",
+    "acero",
+    "hormigon",
+    "hormigón",
+    "concreto",
+    "agrietamiento",
+    "fisuracion",
+    "fisuración",
+    "pandeo",
+    "pérdida",
+    "seccion",
+    "sección",
+    "recubrimiento",
+    "carbonatacion",
+    "carbonatación",
+    "cloruros",
+    "sulfatos",
+    "alcalinidad",
+    "ph",
+    "carbonatado",
 ]
 
 FASES_OBRA = [
-    'fase 1', 'fase 2', 'fase 3', 'fase 4', 'fase 5',
-    'fase i', 'fase ii', 'fase iii', 'fase iv', 'fase v',
-    'pendiente', 'en progreso', 'en_progreso', 'completado', 'finalizado',
-    'planificacion', 'planificación', 'ejecucion', 'ejecución', 'cierre',
-    'inspeccion', 'inspección', 'diagnostico', 'diagnóstico', 'proyecto',
-    'licitacion', 'licitación', 'adjudicacion', 'adjudicación', 'inicio',
-    'avance 25', 'avance 50', 'avance 75', 'avance 100'
+    "fase 1",
+    "fase 2",
+    "fase 3",
+    "fase 4",
+    "fase 5",
+    "fase i",
+    "fase ii",
+    "fase iii",
+    "fase iv",
+    "fase v",
+    "pendiente",
+    "en progreso",
+    "en_progreso",
+    "completado",
+    "finalizado",
+    "planificacion",
+    "planificación",
+    "ejecucion",
+    "ejecución",
+    "cierre",
+    "inspeccion",
+    "inspección",
+    "diagnostico",
+    "diagnóstico",
+    "proyecto",
+    "licitacion",
+    "licitación",
+    "adjudicacion",
+    "adjudicación",
+    "inicio",
+    "avance 25",
+    "avance 50",
+    "avance 75",
+    "avance 100",
 ]
+
 
 def normalize_text(text: str) -> str:
     """Normaliza texto para matching: lowercase, sin acentos, guiones/underscores -> espacios"""
     replacements = {
-        'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u',
-        'ñ': 'n', 'ü': 'u',
-        'Á': 'A', 'É': 'E', 'Í': 'I', 'Ó': 'O', 'Ú': 'U',
-        'Ñ': 'N', 'Ü': 'U',
+        "á": "a",
+        "é": "e",
+        "í": "i",
+        "ó": "o",
+        "ú": "u",
+        "ñ": "n",
+        "ü": "u",
+        "Á": "A",
+        "É": "E",
+        "Í": "I",
+        "Ó": "O",
+        "Ú": "U",
+        "Ñ": "N",
+        "Ü": "U",
     }
     for k, v in replacements.items():
         text = text.replace(k, v)
-    return text.lower().replace('_', ' ').replace('-', ' ')
+    return text.lower().replace("_", " ").replace("-", " ")
+
 
 def capitalize_words(text: str) -> str:
     """Capitaliza cada palabra manteniendo acentos originales donde sea posible"""
-    return ' '.join(w.capitalize() for w in text.split())
+    return " ".join(w.capitalize() for w in text.split())
+
 
 def infer_ubicacion(dir_name: str, parts: list[str]) -> str:
     """Infiere ubicación desde directorio padre y partes del nombre"""
@@ -163,11 +297,12 @@ def infer_ubicacion(dir_name: str, parts: list[str]) -> str:
             if u == part_norm or u in part_norm.split():
                 return capitalize_words(u)
 
-    return 'Ubicación no especificada'
+    return "Ubicación no especificada"
+
 
 def infer_diagnostico(parts: list[str]) -> str:
     """Infiere diagnóstico técnico desde partes del nombre"""
-    joined = ' '.join(normalize_text(p) for p in parts)
+    joined = " ".join(normalize_text(p) for p in parts)
     encontrados = []
 
     for d in DIAGNOSTICOS_CONOCIDOS:
@@ -178,19 +313,21 @@ def infer_diagnostico(parts: list[str]) -> str:
     if encontrados:
         # Ordenar por longitud descendente (más específico primero)
         encontrados.sort(key=len, reverse=True)
-        return capitalize_words(' '.join(encontrados[:3]))  # Máx 3
+        return capitalize_words(" ".join(encontrados[:3]))  # Máx 3
 
-    return 'Pendiente de diagnóstico técnico'
+    return "Pendiente de diagnóstico técnico"
+
 
 def infer_fase_obra(parts: list[str]) -> str:
     """Infiere fase de obra desde partes del nombre"""
-    joined = ' '.join(normalize_text(p) for p in parts)
+    joined = " ".join(normalize_text(p) for p in parts)
 
     for fase in FASES_OBRA:
         if fase in joined:
             return capitalize_words(fase)
 
-    return 'Fase pendiente'
+    return "Fase pendiente"
+
 
 def parse_metadata_from_path(file_path: Path, base_dir: Path) -> dict:
     """Extrae metadatos técnicos del path del archivo"""
@@ -199,19 +336,20 @@ def parse_metadata_from_path(file_path: Path, base_dir: Path) -> dict:
     file_stem = file_path.stem
 
     # Separar por guiones, underscores, espacios múltiples
-    parts = [p for p in re.split(r'[_\-\s]+', file_stem) if p]
+    parts = [p for p in re.split(r"[_\-\s]+", file_stem) if p]
 
     ubicacion = infer_ubicacion(dir_name, parts)
     diagnostico = infer_diagnostico(parts)
     fase = infer_fase_obra(parts)
 
     return {
-        'ubicacion': ubicacion,
-        'diagnostico_tecnico': diagnostico,
-        'fase_obra': fase,
-        'archivo_original': file_path.name,
-        'ruta_relativa': str(relative_path),
+        "ubicacion": ubicacion,
+        "diagnostico_tecnico": diagnostico,
+        "fase_obra": fase,
+        "archivo_original": file_path.name,
+        "ruta_relativa": str(relative_path),
     }
+
 
 # -----------------------------------------------------------------------------
 # CÁLCULO DE INTEGRIDAD (PQC-Ready)
@@ -219,16 +357,18 @@ def parse_metadata_from_path(file_path: Path, base_dir: Path) -> dict:
 def calculate_sha256(file_path: Path) -> str:
     """Calcula SHA-256 streaming para archivos grandes"""
     hash_sha256 = hashlib.sha256()
-    with open(file_path, 'rb') as f:
-        for chunk in iter(lambda: f.read(1024 * 1024), b''):
+    with open(file_path, "rb") as f:
+        for chunk in iter(lambda: f.read(1024 * 1024), b""):
             hash_sha256.update(chunk)
     return hash_sha256.hexdigest()
+
 
 def generate_drive_file_id(file_path: Path, sha256: str) -> str:
     """Genera ID determinístico compatible con Drive (hash truncado)"""
     # Usar nombre + hash para determinismo
     source = f"{file_path.name}:{sha256}"
     return hashlib.sha256(source.encode()).hexdigest()[:28]  # Formato similar a Drive
+
 
 # -----------------------------------------------------------------------------
 # PROCESADOR PRINCIPAL
@@ -238,19 +378,19 @@ class ETLPipeline:
         self.source_dir = source_dir.resolve()
         self.folder_id = folder_id
         self.recursive = recursive
-        self.stats = {'processed': 0, 'skipped': 0, 'errors': 0}
+        self.stats = {"processed": 0, "skipped": 0, "errors": 0}
 
     def discover_files(self) -> list[Path]:
         """Descubre archivos de imagen en el directorio origen"""
         files = []
         if self.recursive:
             for ext in IMAGE_EXTENSIONS:
-                files.extend(self.source_dir.rglob(f'*{ext}'))
-                files.extend(self.source_dir.rglob(f'*{ext.upper()}'))
+                files.extend(self.source_dir.rglob(f"*{ext}"))
+                files.extend(self.source_dir.rglob(f"*{ext.upper()}"))
         else:
             for ext in IMAGE_EXTENSIONS:
-                files.extend(self.source_dir.glob(f'*{ext}'))
-                files.extend(self.source_dir.glob(f'*{ext.upper()}'))
+                files.extend(self.source_dir.glob(f"*{ext}"))
+                files.extend(self.source_dir.glob(f"*{ext.upper()}"))
 
         # Filtrar por tamaño y ordenar
         valid_files = []
@@ -259,10 +399,13 @@ class ETLPipeline:
                 if f.stat().st_size <= MAX_FILE_SIZE:
                     valid_files.append(f)
                 else:
-                    print(f"⚠️  Archivo omitido (>{MAX_FILE_SIZE/1e6:.0f}MB): {f.name}", file=sys.stderr)
-                    self.stats['skipped'] += 1
+                    print(
+                        f"⚠️  Archivo omitido (>{MAX_FILE_SIZE / 1e6:.0f}MB): {f.name}",
+                        file=sys.stderr,
+                    )
+                    self.stats["skipped"] += 1
             except OSError:
-                self.stats['skipped'] += 1
+                self.stats["skipped"] += 1
 
         return sorted(valid_files)
 
@@ -276,13 +419,13 @@ class ETLPipeline:
             sha256 = calculate_sha256(file_path)
             stats = file_path.stat()
             mime_type, _ = mimetypes.guess_type(str(file_path))
-            mime_type = mime_type or 'application/octet-stream'
+            mime_type = mime_type or "application/octet-stream"
 
             # ID determinístico
             file_id = generate_drive_file_id(file_path, sha256)
 
             # Thumbnail placeholder (en producción vendría de Drive API)
-            thumbnail_link = f'https://drive.google.com/thumbnail?id={file_id}&sz=w400'
+            thumbnail_link = f"https://drive.google.com/thumbnail?id={file_id}&sz=w400"
 
             # Descripción legible para UI
             description = (
@@ -292,9 +435,9 @@ class ETLPipeline:
             )
 
             file_meta = FileMeta(
-                diagnostico_tecnico=meta_dict['diagnostico_tecnico'],
-                fase_obra=meta_dict['fase_obra'],
-                ubicacion=meta_dict['ubicacion'],
+                diagnostico_tecnico=meta_dict["diagnostico_tecnico"],
+                fase_obra=meta_dict["fase_obra"],
+                ubicacion=meta_dict["ubicacion"],
                 sha256=sha256,
                 size=stats.st_size,
                 mime_type=mime_type,
@@ -308,12 +451,12 @@ class ETLPipeline:
                 meta=file_meta,
             )
 
-            self.stats['processed'] += 1
+            self.stats["processed"] += 1
             return ssot_file
 
         except Exception as e:
             print(f"❌ Error procesando {file_path.name}: {e}", file=sys.stderr)
-            self.stats['errors'] += 1
+            self.stats["errors"] += 1
             return None
 
     def run(self) -> SSOTResponse:
@@ -354,28 +497,31 @@ class ETLPipeline:
 
         return response
 
+
 # -----------------------------------------------------------------------------
 # SERIALIZACIÓN JSON (compatibilidad ssot-bridge.js)
 # -----------------------------------------------------------------------------
 def serialize_ssot_response(response: SSOTResponse) -> dict[str, object]:
     """Serializa a dict compatible con ssot-bridge.js (camelCase)"""
+
     def to_camel(snake_str: str) -> str:
-        parts = snake_str.split('_')
-        return parts[0] + ''.join(p.capitalize() for p in parts[1:])
+        parts = snake_str.split("_")
+        return parts[0] + "".join(p.capitalize() for p in parts[1:])
 
     def convert_keys(obj: object) -> object:
         if isinstance(obj, dict):
             return {to_camel(k): convert_keys(v) for k, v in obj.items()}
         elif isinstance(obj, list):
             return [convert_keys(i) for i in obj]
-        elif hasattr(obj, '__dataclass_fields__'):
+        elif hasattr(obj, "__dataclass_fields__"):
             return convert_keys(asdict(obj))
         return obj
 
     result = convert_keys(asdict(response))
     if not isinstance(result, dict):
-        raise TypeError('serialize_ssot_response: expected dict result')
+        raise TypeError("serialize_ssot_response: expected dict result")
     return result
+
 
 # -----------------------------------------------------------------------------
 # VALIDACIÓN DE ESQUEMA (Zero-Trust)
@@ -388,89 +534,96 @@ def validate_ssot_schema(data: dict) -> tuple[bool, list[str]]:
         errors.append("Root debe ser objeto")
         return False, errors
 
-    required_keys = {'success', 'folderId', 'fileCount', 'files'}
+    required_keys = {"success", "folderId", "fileCount", "files"}
     missing = required_keys - set(data.keys())
     if missing:
         errors.append(f"Claves requeridas faltantes: {missing}")
 
-    if not isinstance(data.get('files'), list):
+    if not isinstance(data.get("files"), list):
         errors.append("'files' debe ser array")
         return False, errors
 
-    for i, f in enumerate(data['files']):
+    for i, f in enumerate(data["files"]):
         if not isinstance(f, dict):
             errors.append(f"files[{i}]: debe ser objeto")
             continue
 
-        file_required = {'id', 'name', 'thumbnailLink', 'description', 'meta'}
+        file_required = {"id", "name", "thumbnailLink", "description", "meta"}
         file_missing = file_required - set(f.keys())
         if file_missing:
             errors.append(f"files[{i}]: claves faltantes {file_missing}")
 
-        meta = f.get('meta', {})
+        meta = f.get("meta", {})
         if not isinstance(meta, dict):
             errors.append(f"files[{i}].meta: debe ser objeto")
             continue
 
-        meta_required = {'diagnosticoTecnico', 'faseObra', 'ubicacion', 'sha256', 'size', 'mimeType'}
+        meta_required = {
+            "diagnosticoTecnico",
+            "faseObra",
+            "ubicacion",
+            "sha256",
+            "size",
+            "mimeType",
+        }
         meta_missing = meta_required - set(meta.keys())
         if meta_missing:
             errors.append(f"files[{i}].meta: claves faltantes {meta_missing}")
 
     return len(errors) == 0, errors
 
+
 # -----------------------------------------------------------------------------
 # CLI
 # -----------------------------------------------------------------------------
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='FASE 36 - Orquestador ETL Local para SSoT ENKA',
+        description="FASE 36 - Orquestador ETL Local para SSoT ENKA",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Ejemplos:
   python scripts/run_etl_pipeline.py --source ./evidencia/atlas
   python scripts/run_etl_pipeline.py -s ./evidencia -o etl_output.json --folder-id 1abc123
   python scripts/run_etl_pipeline.py -s ./fotos --no-recursive --validate-only
-        """
+        """,
     )
 
     parser.add_argument(
-        '-s', '--source',
+        "-s",
+        "--source",
         required=True,
-        help='Directorio origen con imágenes (requerido)'
+        help="Directorio origen con imágenes (requerido)",
     )
     parser.add_argument(
-        '-o', '--output',
-        help='Archivo JSON de salida (default: stdout)'
+        "-o", "--output", help="Archivo JSON de salida (default: stdout)"
     )
     parser.add_argument(
-        '-f', '--folder-id',
+        "-f",
+        "--folder-id",
         default=DEFAULT_FOLDER_ID,
-        help=f'ID carpeta Drive destino (default: {DEFAULT_FOLDER_ID})'
+        help=f"ID carpeta Drive destino (default: {DEFAULT_FOLDER_ID})",
     )
     parser.add_argument(
-        '-c', '--concurrency',
+        "-c",
+        "--concurrency",
         type=int,
         default=1,
-        help='Concurrencia (reservado para futuro, default: 1)'
+        help="Concurrencia (reservado para futuro, default: 1)",
     )
     parser.add_argument(
-        '--no-recursive',
-        action='store_true',
-        help='No procesar subdirectorios'
+        "--no-recursive", action="store_true", help="No procesar subdirectorios"
     )
     parser.add_argument(
-        '--validate-only',
-        action='store_true',
-        help='Solo validar esquema del JSON de salida (requiere --output)'
+        "--validate-only",
+        action="store_true",
+        help="Solo validar esquema del JSON de salida (requiere --output)",
     )
     parser.add_argument(
-        '--pretty',
-        action='store_true',
-        help='JSON pretty-print (indent=2)'
+        "--pretty", action="store_true", help="JSON pretty-print (indent=2)"
     )
 
     return parser.parse_args()
+
 
 # -----------------------------------------------------------------------------
 # MAIN
@@ -498,7 +651,7 @@ def main():
             print(f"❌ Archivo no existe: {output_path}", file=sys.stderr)
             sys.exit(1)
 
-        with open(output_path, encoding='utf-8') as f:
+        with open(output_path, encoding="utf-8") as f:
             data = json.load(f)
 
         valid, errors = validate_ssot_schema(data)
@@ -530,11 +683,13 @@ def main():
         sys.exit(1)
 
     # Salida
-    json_str = json.dumps(json_output, indent=2 if args.pretty else None, ensure_ascii=False)
+    json_str = json.dumps(
+        json_output, indent=2 if args.pretty else None, ensure_ascii=False
+    )
 
     if args.output:
         output_path = Path(args.output)
-        output_path.write_text(json_str, encoding='utf-8')
+        output_path.write_text(json_str, encoding="utf-8")
         print(f"\n💾 JSON guardado en: {output_path}", file=sys.stderr)
     else:
         print(json_str)
@@ -542,16 +697,26 @@ def main():
     # Registrar en Engram (best effort)
     try:
         import subprocess
-        subprocess.run([
-            'engram', 'save',
-            f'ETL Fase 36 - {datetime.now().strftime("%Y-%m-%d %H:%M")}',
-            f"Procesados {pipeline.stats['processed']} archivos desde {source_dir}. "
-            f"Folder ID: {args.folder_id}. Compatible ssot-bridge.js.",
-            '--type', 'task',
-            '--project', 'enka-patrimonial',
-        ], check=False, capture_output=True, timeout=5)
+
+        subprocess.run(
+            [
+                "engram",
+                "save",
+                f"ETL Fase 36 - {datetime.now().strftime('%Y-%m-%d %H:%M')}",
+                f"Procesados {pipeline.stats['processed']} archivos desde {source_dir}. "
+                f"Folder ID: {args.folder_id}. Compatible ssot-bridge.js.",
+                "--type",
+                "task",
+                "--project",
+                "enka-patrimonial",
+            ],
+            check=False,
+            capture_output=True,
+            timeout=5,
+        )
     except Exception as e:  # noqa: BLE001
         print(f"⚠️ Engram save failed: {e}", file=sys.stderr)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
