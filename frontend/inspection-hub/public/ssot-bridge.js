@@ -11,34 +11,52 @@ const GAS_WEB_APP_URL = (typeof window !== 'undefined' && window.GAS_WEB_APP_URL
 // Local static JSON fallback (for development/offline)
 const LOCAL_SSOT_JSON = '/data/ssot_dossier.json';
 
+// Configuración de timeout para fallback rápido (1.5s)
+const GAS_TIMEOUT_MS = 1500;
+
 /**
- * Función asíncrona para consumir el SSoT Middleware GAS
+ * Función asíncrona para consumir el SSoT Middleware GAS con timeout rápido
  * @param {string} folderId - ID de la carpeta Drive del Atlas Fotográfico
  * @returns {Promise<Object>} - Datos parsed con metadatos JSON
  */
 async function loadSSOTMetadata(folderId = '1oq-3k-wP2NEOUZrRoPTJXtxlBwbWc0OY') {
-  // Try GAS Web App first
-  if (GAS_WEB_APP_URL && GAS_WEB_APP_URL.includes('script.google.com')) {
-    try {
-      const url = `${GAS_WEB_APP_URL}?folderId=${encodeURIComponent(folderId)}`;
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: { 'Accept': 'application/json' },
-        credentials: 'omit'
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        if (data?.success && data?.files) {
-          return normalizeSSOTData(data);
-        }
+  // Si no hay GAS URL válida, ir directo a local
+  if (!GAS_WEB_APP_URL || !GAS_WEB_APP_URL.includes('script.google.com')) {
+    console.info('ℹ️ No GAS Web App URL configured, loading local JSON');
+    return loadLocalSSOT();
+  }
+
+  // Try GAS Web App with timeout
+  try {
+    const url = `${GAS_WEB_APP_URL}?folderId=${encodeURIComponent(folderId)}`;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), GAS_TIMEOUT_MS);
+    
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' },
+      credentials: 'omit',
+      signal: controller.signal
+    });
+    
+    clearTimeout(timeoutId);
+    
+    if (response.ok) {
+      const data = await response.json();
+      if (data?.success && data?.files) {
+        console.info('✅ SSOT metadata loaded from GAS Web App');
+        return normalizeSSOTData(data);
       }
-      console.warn('⚠️ GAS Web App response invalid, falling back to local JSON');
-    } catch (error) {
+    }
+    console.warn('⚠️ GAS Web App response invalid, falling back to local JSON');
+  } catch (error) {
+    if (error.name === 'AbortError') {
+      console.warn(`⚠️ GAS Web App timeout (${GAS_TIMEOUT_MS}ms), falling back to local JSON`);
+    } else {
       console.warn('⚠️ GAS Web App fetch failed, falling back to local JSON:', error?.message);
     }
   }
-      
+  
   // Fallback: load from local static JSON
   return loadLocalSSOT();
 }
@@ -255,17 +273,9 @@ async function initSSOT(containerId = 'dossier-nativo-container', folderId = '1o
     console.error(`Container ${containerId} not found`);
     return;
   }
-  
-  // Mostrar estado de loading mientras se carga
-  container.innerHTML = `
-    <div class="loading-state">
-      <svg width="32" height="32" viewBox="0 0 32 32" role="status">
-        <circle cx="16" cy="16" r="14" fill="none" stroke-width="3" />
-        <circle cx="16" cy="16" r="6" fill="currentColor" stroke-width="3" />
-      </svg>
-      <span>Conectando con el SSoT Institucional...</span>
-    </div>`;
-  
+      
+  // Cargar y renderizar inmediatamente (sin loading spinner)
+  // La función loadSSOTMetadata maneja fallback rápido a JSON local
   const data = await loadSSOTMetadata(folderId);
   renderSSOTCards(data, container);
 }
