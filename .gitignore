@@ -212,3 +212,5 @@ assets/
 *.webp
 *.mp4
 *.mov
+# Local Pi runtime state
+.atl/
