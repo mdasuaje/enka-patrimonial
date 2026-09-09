@@ -1,0 +1,231 @@
+# ==============================================================================
+# ENKA PATRIMONIAL — CI/CD PIPELINE (Zero-Billing, Zero-Copy, PQC-Ready)
+# ==============================================================================
+# Propósito: Validación automática del expediente técnico BIC G.O. 39.272
+#            y despliegue continuo a Firebase Hosting (Spark Plan).
+#
+# Arquitectura:
+# - Zero-Copy: Solo metadatos + SHA-256 en frontend, binarios en Drive SSoT
+# - Segregación: Expediente público (BIC) ↔ Módulo financiero (RLS)
+# - PQC-Ready: Campos pqcSignature/pqcAlgorithm preparados para ML-DSA-65
+# - Zero-Billing: Firebase Spark + GitHub Actions free tier
+#
+# Triggers: push a main, PR a main, schedule diario (validación integridad)
+# ==============================================================================
+
+name: ENKA Patrimonial — CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/inspection-hub/public/**'
+      - 'scripts/**'
+      - '.github/workflows/deploy.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'frontend/inspection-hub/public/**'
+      - 'scripts/**'
+      - '.github/workflows/deploy.yml'
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Entorno de despliegue'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - preview
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  checks: write
+
+env:
+  NODE_VERSION: '20'
+  PYTHON_VERSION: '3.11'
+  FIREBASE_PROJECT: 'enka-gestion-patrimonial-2026'
+  SSOT_FOLDER_ID: '1oq-3k-wP2NEOUZrRoPTJXtxlBwbWc0OY'
+  DOSSIER_JSON: 'frontend/inspection-hub/public/data/ssot_dossier.json'
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # VALIDACIÓN E2E DEL DATASET SSoT
+  # ---------------------------------------------------------------------------
+  validate-ssot-dataset:
+    name: Validar Dataset SSoT (E2E)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install validation dependencies
+        run: pip install --quiet pyyaml jsonschema
+
+      - name: Validar estructura y integridad ssot_dossier.json
+        run: python3 scripts/validate_ssot_dossier.py
+        env:
+          DOSSIER_JSON: ${{ env.DOSSIER_JSON }}
+          SSOT_FOLDER_ID: ${{ env.SSOT_FOLDER_ID }}
+
+      - name: Verificar cambios en dataset (solo PRs)
+        if: github.event_name == 'pull_request'
+        run: |
+          git diff --name-only origin/main...HEAD | grep -q "ssot_dossier.json" && \
+            echo "::notice::Dataset ssot_dossier.json modificado en este PR" || \
+            echo "Dataset no modificado en este PR"
+
+  # ---------------------------------------------------------------------------
+  # LINT Y TYPE-CHECK FRONTEND
+  # ---------------------------------------------------------------------------
+  lint-frontend:
+    name: Lint & Type-Check Frontend
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: ./frontend/inspection-hub
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/inspection-hub/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund 2>/dev/null || npm install --prefer-offline --no-audit --no-fund
+
+      - name: Run lint (biome/ruff)
+        run: |
+          if [ -f package.json ] && grep -q '"@biomejs/biome"' package.json; then
+            npx biome check --apply-unsafe public/
+          else
+            echo 'Biome no configurado, saltando lint'
+          fi
+
+      - name: Verificar ssot-bridge.js (no innerHTML, no forEach en arrays)
+        run: |
+          if grep -q 'innerHTML' public/ssot-bridge.js; then
+            echo '::error::ssot-bridge.js contiene innerHTML - riesgo XSS'
+            exit 1
+          fi
+          if grep -q '\.forEach(' public/ssot-bridge.js; then
+            echo '::warning::ssot-bridge.js usa forEach - preferir for...of'
+          fi
+          echo 'OK ssot-bridge.js pasa verificaciones de seguridad'
+
+  # ---------------------------------------------------------------------------
+  # VALIDACIÓN SCRIPTS PYTHON (ETL PIPELINE)
+  # ---------------------------------------------------------------------------
+  validate-scripts:
+    name: Validar Scripts Python (ETL)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install --quiet pyyaml
+
+      - name: Validar run_etl_pipeline.py (syntax + imports)
+        run: |
+          python3 -m py_compile scripts/run_etl_pipeline.py
+          echo 'OK Syntax OK'
+
+      - name: Verificar bulk_upload_ssot.js (syntax)
+        run: |
+          node --check scripts/bulk_upload_ssot.js
+          echo 'OK Syntax OK'
+
+      - name: Verificar patrones de seguridad en scripts
+        run: |
+          if grep -r 'eval\|exec(' scripts/ --include="*.py" | grep -v 'test_\|# '; then
+            echo '::warning::Patrones potencialmente inseguros detectados en scripts Python'
+          fi
+          if grep -r 'shell=True' scripts/ --include="*.py" | grep -v 'test_\|# '; then
+            echo '::warning::subprocess con shell=True detectado - revisar validacion de entrada'
+          fi
+          echo 'OK Verificacion de seguridad completada'
+
+  # ---------------------------------------------------------------------------
+  # DESPLIEGUE A FIREBASE HOSTING (Solo en push a main / workflow_dispatch)
+  # ---------------------------------------------------------------------------
+  deploy-firebase:
+    name: Desplegar a Firebase Hosting
+    needs: [validate-ssot-dataset, lint-frontend, validate-scripts]
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: production
+      url: https://enka-gestion-patrimonial-2026.web.app
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools@latest
+
+      - name: Desplegar a Firebase Hosting
+        run: |
+          cd frontend/inspection-hub
+          firebase deploy --only hosting --project ${{ env.FIREBASE_PROJECT }} --non-interactive
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+      - name: Verificar despliegue (health check)
+        run: |
+          sleep 5
+          curl -sf -o /dev/null -w '%{http_code}' https://enka-gestion-patrimonial-2026.web.app | grep -q '^200$' && \
+            echo 'OK Health check OK (200)' || \
+            (echo '::error::Health check fallo' && exit 1)
+
+      - name: Verificar dataset accesible en produccion
+        run: |
+          curl -sf https://enka-gestion-patrimonial-2026.web.app/data/ssot_dossier.json | python3 scripts/validate_prod_dossier.py
+
+  # ---------------------------------------------------------------------------
+  # NOTIFICACIÓN FINAL (Solo fallos)
+  # ---------------------------------------------------------------------------
+  notify-failure:
+    name: Notificar Fallo
+    needs: [validate-ssot-dataset, lint-frontend, validate-scripts, deploy-firebase]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fallo detectado en pipeline
+        run: |
+          echo "::error::Pipeline CI/CD fallo - revisar jobs anteriores"
+          echo "Resultados: validate=${{ needs.validate-ssot-dataset.result }}, lint=${{ needs.lint-frontend.result }}, scripts=${{ needs.validate-scripts.result }}, deploy=${{ needs.deploy-firebase.result }}"
