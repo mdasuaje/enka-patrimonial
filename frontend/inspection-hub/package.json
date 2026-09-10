@@ -1,0 +1,17 @@
+{
+  "name": "enka-inspection-hub",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "biome check --apply-unsafe public/",
+    "lint:check": "biome check public/",
+    "format": "biome format --write public/"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

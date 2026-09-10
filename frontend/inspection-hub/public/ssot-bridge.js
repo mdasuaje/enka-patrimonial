@@ -129,8 +129,10 @@ function normalizeSSOTData(data) {
  * @param {HTMLElement} container - Contenedor HTML donde insertar las tarjetas
  */
 function renderSSOTCards(data, container) {
-  // Limpiar contenedor de forma segura
-  container.innerHTML = "";
+      // Limpiar contenedor de forma segura (sin innerHTML)
+      while (container.firstChild) {
+        container.removeChild(container.firstChild);
+      }
 
   if (!data.success || data.files.length === 0) {
     const emptyMsg = document.createElement("div");
